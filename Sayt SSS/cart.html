@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Корзина — LANA WOVEN</title>
+    <link href="https://fonts.googleapis.com/css2?family=Tenor+Sans&family=Montserrat:wght@400;600;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <link rel="stylesheet" href="style.css">
+</head>
+<body id="page-cart">
+
+    <header class="header scrolled">
+        <div class="logo" onclick="location.href='index.html'">LANA WOVEN</div>
+        <nav class="nav-menu">
+            <a href="index.html#catalog">Коллекции</a>
+            <a href="about.html">О нас</a>
+            <a href="delivery.html">Доставка и оплата</a>
+            <a href="contacts.html">Контакты</a>
+            <a href="cart.html" class="cart-btn-nav">Корзина <span class="header-cart-price"></span></a>
+        </nav>
+    </header>
+
+    <main class="cart-page-section reveal">
+        <div class="cart-header-row" id="cart-header">
+            <h1 class="cart-title">Корзина</h1>
+            <button class="btn-outline" style="width: auto; padding: 10px 20px; font-size: 12px; border-color: #e74c3c; color: #e74c3c;" onclick="clearCart()" id="clear-cart-btn">Очистить всё</button>
+        </div>
+        
+        <div id="cart-items"></div>
+        
+        <div id="cart-summary" class="cart-summary-block" style="display: none;">
+            <div class="promo-container">
+                <div class="promo-input-group">
+                    <input type="text" id="promo-code-input" placeholder="Введите промокод">
+                    <button class="btn-outline promo-apply-btn" onclick="applyPromo()">Применить</button>
+                </div>
+                <div id="promo-message" class="promo-message"></div>
+            </div>
+            
+            <div class="cart-total-details">
+                <div class="cart-subtotal-row" id="cart-subtotal-row" style="display: none;">
+                    <span>Сумма товаров:</span>
+                    <span id="subtotal-price">0 ₽</span>
+                </div>
+                <div class="cart-discount-row" id="cart-discount-row" style="display: none;">
+                    <span>Скидка по промокоду:</span>
+                    <span id="discount-amount" style="color: #27AE60; font-weight: 800;">-0 ₽</span>
+                </div>
+                <div class="cart-total-row">
+                    <span>Итого к оплате:</span> 
+                    <span class="cart-total-price"><span id="total-price">0</span> ₽</span>
+                </div>
+            </div>
+        </div>
+
+        <div class="order-form-block cart-form" id="cart-form" style="display: none; margin-top: 30px;">
+            <h2>Оформление заказа</h2>
+            <p style="text-align: center; color: var(--gray); margin-bottom: 20px;">Оставьте данные, и мастер Светлана свяжется с вами для уточнения цветов палитры.</p>
+            <input type="text" class="order-input" placeholder="Ваше имя" id="order-name">
+            <input type="tel" class="order-input" placeholder="Ваш телефон" id="order-phone">
+            <textarea class="order-input" placeholder="Комментарий (например: хочу кашпо бежевого цвета)" style="height: 100px;" id="order-comment"></textarea>
+            <div style="display: flex; gap: 15px; margin-top: 10px;">
+                <button class="btn-outline" style="flex: 1;" onclick="window.location.href='index.html#catalog'">Добавить товары</button>
+                <button class="btn-main order-submit-btn" style="flex: 2;" onclick="submitOrder()">Отправить заказ мастеру</button>
+            </div>
+        </div>
+
+        <div id="order-success-block" style="display: none; text-align: center; padding: 80px 20px; background: var(--card-bg); border-radius: 30px; border: 1px solid var(--border-color); margin-top: 20px; box-shadow: 0 20px 50px rgba(0,0,0,0.05);">
+            <i class="fas fa-check-circle" style="font-size: 80px; color: #27AE60; margin-bottom: 25px;"></i>
+            <h2 style="font-family: 'Tenor Sans', serif; font-size: 2.5rem; color: var(--dark); margin-bottom: 15px; text-transform: uppercase;">Заказ успешно оформлен!</h2>
+            <p style="font-size: 1.1rem; color: var(--gray); margin-bottom: 40px; line-height: 1.6; max-width: 600px; margin-left: auto; margin-right: auto;">
+                Ваша заявка передана мастеру. Мы свяжемся с вами в ближайшее время по указанному номеру для подтверждения деталей.
+            </p>
+            <button class="btn-main" onclick="window.location.href='index.html#catalog'" style="width: auto; padding: 18px 50px;">Вернуться к коллекциям</button>
+        </div>
+    </main>
+
+    <footer class="footer">
+        <div class="footer-container">
+            <div class="footer-about">
+                <h3>LANA WOVEN</h3>
+                <p>Каждое изделие уникально и плетется вручную с использованием долговечного эко-ротанга.</p>
+            </div>
+            <div class="footer-links">
+                <h3>Информация</h3>
+                <a href="index.html#catalog">Каталог товаров</a>
+                <a href="about.html">О нас</a>
+                <a href="delivery.html">Оплата и доставка</a>
+                <a href="contacts.html">Контакты</a>
+                <a href="cart.html">Корзина</a>
+            </div>
+            <div class="footer-contact">
+                <h3>Связь с мастером</h3>
+                <p>По вопросам сотрудничества пишите на почту:</p>
+                <a href="https://e.mail.ru/compose/?to=lanawoven@mail.ru" target="_blank" class="email-link">lanawoven@mail.ru</a>
+            </div>
+        </div>
+        <div class="footer-bottom">&copy; 2026 LANA WOVEN. Handmade in Russia.</div>
+    </footer>
+
+    <script src="script.js"></script>
+</body>
+</html>

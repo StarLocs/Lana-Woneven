@@ -1,5 +1,5 @@
 // ==========================================
-// --- LANA WOVEN SCRIPT (ФИНАЛ СО ВСЕМИ 12 ТОВАРАМИ) ---
+// --- LANA WOVEN SCRIPT (ПОЛНЫЙ СКРИПТ + ГУГЛ МОСТ) ---
 // ==========================================
 
 let cart = [];
@@ -157,7 +157,7 @@ document.addEventListener("DOMContentLoaded", () => {
         'page-vase': ['img/vase1.jpg', 'img/vase2.jpg'],
         'page-floor-20l': ['img/floor_20l_1.jpg', 'img/floor_20l_2.jpg'],
         'page-floor-12l': ['img/floor_12l_1.jpg', 'img/floor_12l_2.jpg'],
-        'page-floor-12l-2': ['img/floor_12l_new1.jpg', 'img/floor_12l_new2.jpg'] // Новое кашпо
+        'page-floor-12l-2': ['img/floor_12l_new1.jpg', 'img/floor_12l_new2.jpg']
     };
 
     const pageId = document.body.id;
@@ -406,6 +406,7 @@ function renderCartPage() {
     if(clearBtn) clearBtn.style.display = 'block';
 }
 
+// === ОТПРАВКА ЗАКАЗА ЧЕРЕЗ GOOGLE МОСТ (ОБХОД БЛОКИРОВОК) ===
 window.submitOrder = function() {
     try {
         const name = document.getElementById('order-name').value;
@@ -414,8 +415,8 @@ window.submitOrder = function() {
 
         if(!name || !phone) { alert("❌ Пожалуйста, заполните имя и телефон для связи!"); return; }
 
-        const botToken = '8756988856:AAGYG6kGdqrHdgUV0h1h0i8C926XgxvKYA8'; 
-        const chatId = '1092576579';
+        // ССЫЛКА НА ГУГЛ МОСТ
+        const googleBridgeUrl = 'https://script.google.com/macros/s/AKfycbxrHBezQkkcN18Pthq6QdfA_xGNsQi5bDqB0du-Xl0wiVKRYrqFkxYs1SkEzHEyVHCf/exec'; 
 
         let orderText = `🚨 *Новый заказ с сайта LANA WOVEN!*\n\n👤 *Имя:* ${name}\n📞 *Телефон:* ${phone}\n`;
         if (comment) orderText += `💬 *Комментарий:* ${comment}\n`;
@@ -431,12 +432,9 @@ window.submitOrder = function() {
 
         let discountAmount = Math.round(subtotal * (discountPercent / 100));
         let finalTotal = subtotal - discountAmount;
+        if (discountPercent > 0) orderText += `\n🎁 *Скидка:* -${discountAmount} ₽`;
+        orderText += `\n💰 *ИТОГО:* ${finalTotal} ₽`;
 
-        if (discountPercent > 0) orderText += `\n🎁 *Скидка по промокоду:* -${discountAmount} ₽`;
-        orderText += `\n💰 *ИТОГО К ОПЛАТЕ:* ${finalTotal} ₽`;
-
-        const url = `https://api.telegram.org/bot${botToken}/sendMessage`;
-        
         let loader = document.getElementById('loading-overlay');
         if (!loader) {
             document.body.insertAdjacentHTML('beforeend', `<div class="loading-overlay" id="loading-overlay"><i class="fas fa-hourglass-half hourglass-spinner"></i><div class="loading-text">Отправляем заказ...</div></div>`);
@@ -444,26 +442,27 @@ window.submitOrder = function() {
         }
         loader.classList.add('active');
 
-        fetch(url, { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ chat_id: chatId, text: orderText, parse_mode: 'Markdown' }) })
-        .then(response => response.json())
-        .then(data => {
-            if (data.ok) {
-                cart = []; saveCart(); discountPercent = 0; updateHeaderCart();
-                document.getElementById('cart-items').style.display = 'none';
-                document.getElementById('cart-summary').style.display = 'none';
-                document.getElementById('cart-form').style.display = 'none';
-                document.getElementById('cart-header').style.display = 'none';
-                const successBlock = document.getElementById('order-success-block');
-                if (successBlock) { successBlock.style.display = 'block'; successBlock.classList.add('reveal', 'active'); }
-                document.getElementById('order-name').value = '';
-                document.getElementById('order-phone').value = '';
-                document.getElementById('order-comment').value = '';
-            } else {
-                alert(`⚠️ Ошибка Telegram: ${data.description}\n\nВы точно нажали кнопку СТАРТ внутри вашего бота в самом Телеграме?`);
-            }
+        fetch(googleBridgeUrl, {
+            method: 'POST',
+            mode: 'no-cors', 
+            cache: 'no-cache',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ text: orderText })
         })
-        .catch(error => { alert('⚠️ Нет интернета или браузер блокирует запрос. Попробуйте отключить VPN или написать нам напрямую.'); console.error(error); })
+        .then(() => {
+            cart = []; saveCart(); discountPercent = 0; updateHeaderCart();
+            document.getElementById('cart-items').style.display = 'none';
+            document.getElementById('cart-summary').style.display = 'none';
+            document.getElementById('cart-form').style.display = 'none';
+            document.getElementById('cart-header').style.display = 'none';
+            const successBlock = document.getElementById('order-success-block');
+            if (successBlock) successBlock.style.display = 'block';
+        })
+        .catch(error => {
+            alert('⚠️ Ошибка сети. Заказ мог не отправиться. Напишите нам в Телеграм напрямую.');
+            console.error(error);
+        })
         .finally(() => { loader.classList.remove('active'); });
 
-    } catch (error) { alert("⚠️ Произошла системная ошибка при сборе данных. Код ошибки: " + error.message); }
+    } catch (error) { alert("⚠️ Ошибка: " + error.message); }
 };

@@ -22,10 +22,24 @@
     </header>
 
     <section class="hero">
-        <div class="hero-content">
-            <h1 class="reveal">Искусство <span>Плетения</span></h1>
-            <p class="reveal delay-1">Премиальный декор ручной работы от Светланы. Создаем эстетику и неповторимый уют в каждом доме.</p>
-            <button class="btn-main reveal delay-2" onclick="document.getElementById('catalog').scrollIntoView({behavior: 'smooth'})">В каталог</button>
+        <div class="hero-wrapper">
+            <div class="hero-content reveal">
+                <h1>Искусство<br><span>Плетения</span></h1>
+                <p>Премиальный декор ручной работы от Светланы. Создаем эстетику и неповторимый уют в каждом доме.</p>
+                <button class="btn-main" onclick="document.getElementById('catalog').scrollIntoView({behavior: 'smooth'})">В каталог</button>
+            </div>
+
+            <div class="promo-hero-card reveal delay-1" onclick="location.href='product-bundle.html'">
+                <div class="promo-badge">🔥 Выгодное предложение</div>
+                <div class="promo-img" style="background-image: url('img/bundle_1.jpg');"></div>
+                <h3 class="promo-title">Набор кашпо из ротанга</h3>
+                <p class="promo-desc">Вместе дешевле! В сет входят кашпо на <b>24 л</b>, на <b>20 л</b> и на <b>12 л</b>.</p>
+                <div class="promo-prices">
+                    <span class="promo-price-old">6 199 ₽</span>
+                    <span class="promo-price-new">5 799 ₽</span>
+                </div>
+                <button class="btn-main" style="width: 100%; margin-top: 15px;">Посмотреть набор</button>
+            </div>
         </div>
     </section>
 
@@ -47,101 +61,185 @@
             </div>
 
             <div class="product-grid" id="product-grid">
+
+                <div class="card reveal delay-1" data-category="pots" data-subcategory="floor">
+                    <div class="card-img" style="background-image: url('img/egg24l_1.jpg');"></div>
+                    <h3>Практичное яйцо кашпо 24л</h3>
+                    <p>Оригинальная форма и большой объем. Надежное плетение из эко-ротанга для крупных растений.</p>
+                    <div class="card-bottom">
+                        <div class="price">2 799 ₽</div>
+                        <button class="btn-outline" onclick="location.href='product-egg-24l.html'">Подробнее</button>
+                    </div>
+                </div>
+
+                <div class="card reveal delay-2" data-category="pots" data-subcategory="floor">
+                    <div class="card-img" style="background-image: url('img/floor20l_v2_1.jpg');"></div>
+                    <h3>Кашпо из ротанга 20л</h3>
+                    <p>Вместительное напольное кашпо для крупных растений. Ручная работа, эко-ротанг.</p>
+                    <div class="card-bottom">
+                        <div class="price">1 799 ₽</div>
+                        <button class="btn-outline" onclick="location.href='product-floor20-v2.html'">Подробнее</button>
+                    </div>
+                </div>
+
+                <div class="card reveal delay-1" data-category="pots" data-subcategory="floor">
+                    <div class="card-img" style="background-image: url('img/floor12l_v3_1.jpg');"></div>
+                    <h3>Кашпо из ротанга 12л</h3>
+                    <p>Новое напольное кашпо ручной работы. Классическое исполнение, прочный эко-ротанг.</p>
+                    <div class="card-bottom">
+                        <div class="price">1 599 ₽</div>
+                        <button class="btn-outline" onclick="location.href='product-floor12-v3.html'">Подробнее</button>
+                    </div>
+                </div>
+
+                <div class="card reveal delay-2" data-category="pots" data-subcategory="floor">
+                    <div class="card-img" style="background-image: url('img/floor12l_v2_1.jpg');"></div>
+                    <h3>Кашпо из ротанга 12л</h3>
+                    <p>Стильное напольное кашпо. Плотное плетение, устойчивый каркас.</p>
+                    <div class="card-bottom">
+                        <div class="price">1 499 ₽</div>
+                        <button class="btn-outline" onclick="location.href='product-floor12-v2.html'">Подробнее</button>
+                    </div>
+                </div>
+
+                <div class="card reveal delay-1" data-category="pots" data-subcategory="floor">
+                    <div class="card-img" style="background-image: url('img/happiness1.jpg');"></div>
+                    <h3>Горшочек счастья 12л</h3>
+                    <p>Эксклюзивное кашпо из ротанга. Создано для уюта и гармонии в вашем доме.</p>
+                    <div class="card-bottom">
+                        <div class="price">1 499 ₽</div>
+                        <button class="btn-outline" onclick="location.href='product-happiness.html'">Подробнее</button>
+                    </div>
+                </div>
                 
+                <div class="card reveal delay-2" data-category="home-garden" data-subcategory="all">
+                    <div class="card-img" style="background-image: url('img/nest1.jpg');"></div>
+                    <h3>Гнездо для аиста</h3>
+                    <p>Доступно: 8 л и 10 л. Идеальное украшение для дома и сада.</p>
+                    <div class="card-bottom">
+                        <div class="price">от 1 399 ₽</div>
+                        <button class="btn-outline" onclick="location.href='product-nest.html'">Подробнее</button>
+                    </div>
+                </div>
+
                 <div class="card reveal delay-1" data-category="pots" data-subcategory="hanging">
                     <div class="card-img" style="background-image: url('img/black1.jpg');"></div>
                     <h3>Подвесное кашпо 5л</h3>
                     <p>Идеально для ампельных растений. В комплекте усиленная цепочка.</p>
-                    <div class="price">1 499 ₽</div>
-                    <button class="btn-outline" onclick="location.href='product.html'">Подробнее</button>
+                    <div class="card-bottom">
+                        <div class="price">1 499 ₽</div>
+                        <button class="btn-outline" onclick="location.href='product.html'">Подробнее</button>
+                    </div>
                 </div>
 
                 <div class="card reveal delay-2" data-category="pots" data-subcategory="floor">
                     <div class="card-img" style="background-image: url('img/floor1.jpg');"></div>
                     <h3>Напольное кашпо 5л</h3>
                     <p>Классическое плотное плетение. Устойчивое основание для украшения пола.</p>
-                    <div class="price">999 ₽</div>
-                    <button class="btn-outline" onclick="location.href='product2.html'">Подробнее</button>
+                    <div class="card-bottom">
+                        <div class="price">999 ₽</div>
+                        <button class="btn-outline" onclick="location.href='product2.html'">Подробнее</button>
+                    </div>
                 </div>
 
                 <div class="card reveal delay-1" data-category="pots" data-subcategory="hanging">
                     <div class="card-img" style="background-image: url('img/floor_pattern1.jpg');"></div>
                     <h3>Подвесное кашпо с узором 5л</h3>
                     <p>Уникальный плетеный узор. В комплекте надежная цепочка для подвешивания.</p>
-                    <div class="price">1 499 ₽</div>
-                    <button class="btn-outline" onclick="location.href='product3.html'">Подробнее</button>
+                    <div class="card-bottom">
+                        <div class="price">1 499 ₽</div>
+                        <button class="btn-outline" onclick="location.href='product3.html'">Подробнее</button>
+                    </div>
                 </div>
 
                 <div class="card reveal delay-2" data-category="pots" data-subcategory="hanging">
                     <div class="card-img" style="background-image: url('img/hanging2_1.jpg');"></div>
                     <h3>Подвесное кашпо 5л</h3>
                     <p>Альтернативная форма классического подвесного кашпо. В комплекте надежная цепочка.</p>
-                    <div class="price">1 499 ₽</div>
-                    <button class="btn-outline" onclick="location.href='product5.html'">Подробнее</button>
+                    <div class="card-bottom">
+                        <div class="price">1 499 ₽</div>
+                        <button class="btn-outline" onclick="location.href='product5.html'">Подробнее</button>
+                    </div>
                 </div>
 
                 <div class="card reveal delay-1" data-category="home-garden" data-subcategory="all">
                     <div class="card-img" style="background-image: url('img/mushroom1.jpg');"></div>
                     <h3>Грибочек из ротанга</h3>
                     <p>Оригинальное плетеное украшение. Идеально дополнит домашний интерьер или садовый ландшафт.</p>
-                    <div class="price">999 ₽</div>
-                    <button class="btn-outline" onclick="location.href='product4.html'">Подробнее</button>
+                    <div class="card-bottom">
+                        <div class="price">999 ₽</div>
+                        <button class="btn-outline" onclick="location.href='product4.html'">Подробнее</button>
+                    </div>
                 </div>
 
                 <div class="card reveal delay-2" data-category="pots" data-subcategory="floor">
                     <div class="card-img" style="background-image: url('img/floor_pattern_new1.jpg');"></div>
                     <h3>Напольное кашпо с узором 5л</h3>
                     <p>Эксклюзивное напольное кашпо с изящным узором ручного плетения. Устойчивое основание.</p>
-                    <div class="price">999 ₽</div>
-                    <button class="btn-outline" onclick="location.href='product6.html'">Подробнее</button>
+                    <div class="card-bottom">
+                        <div class="price">999 ₽</div>
+                        <button class="btn-outline" onclick="location.href='product6.html'">Подробнее</button>
+                    </div>
                 </div>
 
                 <div class="card reveal delay-1" data-category="pots" data-subcategory="floor">
                     <div class="card-img" style="background-image: url('img/floor2_1.jpg');"></div>
                     <h3>Напольное кашпо 5л</h3>
                     <p>Альтернативная форма классического напольного кашпо. Плотное и надежное плетение.</p>
-                    <div class="price">999 ₽</div>
-                    <button class="btn-outline" onclick="location.href='product7.html'">Подробнее</button>
+                    <div class="card-bottom">
+                        <div class="price">999 ₽</div>
+                        <button class="btn-outline" onclick="location.href='product7.html'">Подробнее</button>
+                    </div>
                 </div>
 
                 <div class="card reveal delay-2" data-category="home-garden" data-subcategory="all">
                     <div class="card-img" style="background-image: url('img/trunk1.jpg');"></div>
                     <h3>Ствол с дуплом и кашпо</h3>
                     <p>Впечатляющий ствол высотой 110 см и диаметром 30 см. Станет главным акцентом в саду.</p>
-                    <div class="price">3 499 ₽</div>
-                    <button class="btn-outline" onclick="location.href='product8.html'">Подробнее</button>
+                    <div class="card-bottom">
+                        <div class="price">3 499 ₽</div>
+                        <button class="btn-outline" onclick="location.href='product8.html'">Подробнее</button>
+                    </div>
                 </div>
 
                 <div class="card reveal delay-1" data-category="home-garden" data-subcategory="all">
                     <div class="card-img" style="background-image: url('img/vase1.jpg');"></div>
                     <h3>Вазон из ротанга 6.5л</h3>
                     <p>Вместительный и изящный вазон. Идеально подойдет для объемных растений на веранде.</p>
-                    <div class="price">999 ₽</div>
-                    <button class="btn-outline" onclick="location.href='product9.html'">Подробнее</button>
+                    <div class="card-bottom">
+                        <div class="price">999 ₽</div>
+                        <button class="btn-outline" onclick="location.href='product9.html'">Подробнее</button>
+                    </div>
                 </div>
 
                 <div class="card reveal delay-2" data-category="pots" data-subcategory="floor">
                     <div class="card-img" style="background-image: url('img/floor_20l_1.jpg');"></div>
                     <h3>Кашпо из ротанга 20л</h3>
                     <p>Огромное напольное кашпо для крупных деревьев и пальм. Надежный каркас.</p>
-                    <div class="price">1 799 ₽</div>
-                    <button class="btn-outline" onclick="location.href='product10.html'">Подробнее</button>
+                    <div class="card-bottom">
+                        <div class="price">1 799 ₽</div>
+                        <button class="btn-outline" onclick="location.href='product10.html'">Подробнее</button>
+                    </div>
                 </div>
 
                 <div class="card reveal delay-1" data-category="pots" data-subcategory="floor">
                     <div class="card-img" style="background-image: url('img/floor_12l_1.jpg');"></div>
-                    <h3>Кашпо из ротанга 12л</h3>
+                    <h3>Кашпо из ротанга 12л (Тип 1)</h3>
                     <p>Вместительное напольное кашпо для средних и крупных комнатных растений.</p>
-                    <div class="price">1 499 ₽</div>
-                    <button class="btn-outline" onclick="location.href='product11.html'">Подробнее</button>
+                    <div class="card-bottom">
+                        <div class="price">1 499 ₽</div>
+                        <button class="btn-outline" onclick="location.href='product11.html'">Подробнее</button>
+                    </div>
                 </div>
 
                 <div class="card reveal delay-2" data-category="pots" data-subcategory="floor">
                     <div class="card-img" style="background-image: url('img/floor_12l_new1.jpg');"></div>
-                    <h3>Кашпо из ротанга 12л</h3>
+                    <h3>Кашпо из ротанга 12л (Тип 2)</h3>
                     <p>Альтернативная форма вместительного кашпо на 12 литров. Идеально для средних и крупных растений.</p>
-                    <div class="price">1 499 ₽</div>
-                    <button class="btn-outline" onclick="location.href='product12.html'">Подробнее</button>
+                    <div class="card-bottom">
+                        <div class="price">1 499 ₽</div>
+                        <button class="btn-outline" onclick="location.href='product12.html'">Подробнее</button>
+                    </div>
                 </div>
 
             </div>

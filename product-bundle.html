@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Набор кашпо из ротанга (3 шт) — LANA WOVEN</title>
+    <link href="https://fonts.googleapis.com/css2?family=Tenor+Sans&family=Montserrat:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <link rel="stylesheet" href="style.css">
+</head>
+<body id="page-bundle">
+
+    <header class="header">
+        <div class="logo" onclick="location.href='index.html'">LANA WOVEN</div>
+        <nav class="nav-menu">
+            <a href="index.html#catalog">Каталог</a>
+            <a href="about.html">О нас</a>
+            <button class="cart-btn-nav" onclick="location.href='cart.html'">
+                <i class="fas fa-shopping-bag"></i> <span class="header-cart-price"></span>
+            </button>
+        </nav>
+    </header>
+
+    <main class="product-page">
+        <div class="gallery-section reveal">
+            <div class="main-photo-box">
+                <img id="mainPhoto" src="img/bundle_1.jpg" alt="Набор кашпо из ротанга">
+            </div>
+            <div class="thumbnails-box" id="thumbContainer"></div>
+        </div>
+
+        <div class="info-section reveal delay-1">
+            <div style="display: inline-block; background: #e74c3c; color: white; padding: 5px 12px; border-radius: 10px; font-size: 12px; font-weight: 700; margin-bottom: 15px; text-transform: uppercase; letter-spacing: 1px;">Выгодное предложение</div>
+            <h1>Набор кашпо из ротанга</h1>
+            <p>Вместе дешевле! Эксклюзивный сет из трех кашпо ручной работы. Идеально подходят друг к другу по стилю и фактуре. В набор входят кашпо объемом <b>24 л</b>, <b>20 л</b> и <b>12 л</b>.</p>
+            
+            <div style="display: flex; align-items: baseline; gap: 15px; margin-bottom: 40px;">
+                <span style="font-size: 20px; color: var(--gray); text-decoration: line-through; font-weight: 500;">6 199 ₽</span>
+                <span class="info-price" style="margin-bottom: 0; color: #e74c3c;">5 799 ₽</span>
+            </div>
+
+            <p style="font-weight: 600; margin-bottom: 15px; color: var(--dark); font-size: 15px;">Выберите цвет набора (укажите в комментарии):</p>
+            <div class="palette-grid" id="paletteGrid"></div>
+
+            <div id="cart-actions" 
+                 data-id="bundle-3in1" 
+                 data-name="Набор кашпо (24л, 20л, 12л)" 
+                 data-price="5799" 
+                 data-img="img/bundle_1.jpg">
+            </div>
+        </div>
+    </main>
+
+    <script src="script.js"></script>
+</body>
+</html>

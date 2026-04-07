@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Практичное яйцо кашпо 24л — LANA WOVEN</title>
+    <link href="https://fonts.googleapis.com/css2?family=Tenor+Sans&family=Montserrat:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <link rel="stylesheet" href="style.css">
+</head>
+<body id="page-egg-24l">
+
+    <header class="header">
+        <div class="logo" onclick="location.href='index.html'">LANA WOVEN</div>
+        <nav class="nav-menu">
+            <a href="index.html#catalog">Каталог</a>
+            <a href="about.html">О нас</a>
+            <button class="cart-btn-nav" onclick="location.href='cart.html'">
+                <i class="fas fa-shopping-bag"></i> <span class="header-cart-price"></span>
+            </button>
+        </nav>
+    </header>
+
+    <main class="product-page">
+        <div class="gallery-section reveal">
+            <div class="main-photo-box">
+                <img id="mainPhoto" src="img/egg24l_1.jpg" alt="Практичное яйцо кашпо 24л">
+            </div>
+            <div class="thumbnails-box" id="thumbContainer"></div>
+        </div>
+
+        <div class="info-section reveal delay-1">
+            <h1>Практичное яйцо кашпо 24л</h1>
+            <p>Оригинальное кашпо в форме яйца. Большой объем в 24 литра позволяет посадить крупные декоративные растения, пальмы или фикусы. Выполнено из эко-ротанга — долговечного и устойчивого материала.</p>
+            <div class="info-price">2 799 ₽</div>
+
+            <p style="font-weight: 600; margin-bottom: 15px; color: var(--dark); font-size: 15px;">Выберите цвет (укажите в комментарии):</p>
+            <div class="palette-grid" id="paletteGrid"></div>
+
+            <div id="cart-actions" 
+                 data-id="egg-24l" 
+                 data-name="Практичное яйцо кашпо (24 л)" 
+                 data-price="2799" 
+                 data-img="img/egg24l_1.jpg">
+            </div>
+        </div>
+    </main>
+
+    <script src="script.js"></script>
+</body>
+</html>

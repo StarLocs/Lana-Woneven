@@ -1,17 +1,36 @@
-// ==========================================
-// --- LANA WOVEN SCRIPT (ПОЛНЫЙ СКРИПТ + ГУГЛ МОСТ) ---
-// ==========================================
+/* ==========================================================================
+   LANA WOVEN - ПОЛНЫЙ СКРИПТ САЙТА (МАКСИМАЛЬНО РАЗВЕРНУТАЯ ВЕРСИЯ)
+   ========================================================================== */
 
+// --- ГЛОБАЛЬНЫЕ ПЕРЕМЕННЫЕ ---
 let cart = [];
 let itemToRemoveId = null; 
 let discountPercent = 0; 
 
-try { if (localStorage.getItem('lana_cart')) cart = JSON.parse(localStorage.getItem('lana_cart')); } catch (e) {}
-function saveCart() { try { localStorage.setItem('lana_cart', JSON.stringify(cart)); } catch (e) {} }
+// --- ЗАГРУЗКА КОРЗИНЫ ИЗ ПАМЯТИ БРАУЗЕРА ---
+try { 
+    if (localStorage.getItem('lana_cart')) {
+        cart = JSON.parse(localStorage.getItem('lana_cart')); 
+    }
+} catch (e) { 
+    console.error("Ошибка загрузки корзины", e); 
+}
 
+// --- СОХРАНЕНИЕ КОРЗИНЫ В ПАМЯТЬ ---
+function saveCart() { 
+    try { 
+        localStorage.setItem('lana_cart', JSON.stringify(cart)); 
+    } catch (e) { 
+        console.error("Ошибка сохранения корзины", e); 
+    } 
+}
+
+// --- СОЗДАНИЕ КРАСИВОГО ОКНА УДАЛЕНИЯ ТОВАРА ---
 function createDeleteModal() {
     const oldModal = document.getElementById('delete-confirm-modal');
-    if (oldModal) oldModal.remove();
+    if (oldModal) {
+        oldModal.remove();
+    }
 
     const modalHtml = `
         <div class="popup-overlay" id="delete-confirm-modal">
@@ -19,7 +38,7 @@ function createDeleteModal() {
                 <h2 style="font-family: 'Tenor Sans', serif; margin-bottom: 15px; color: var(--dark); font-size: 24px; font-weight: normal;">Удалить товар?</h2>
                 <p style="color: var(--gray); margin-bottom: 30px; font-family: 'Montserrat', sans-serif; font-size: 16px;">Вы уверены, что хотите убрать этот товар из корзины?</p>
                 <div style="display: flex; gap: 15px;">
-                    <button style="flex: 1; padding: 15px; font-size: 14px; border-radius: 40px; font-family: 'Montserrat', sans-serif; font-weight: 700; text-transform: uppercase; cursor: pointer; background: transparent; color: var(--dark); border: 2px solid var(--dark);" onclick="closeDeleteModal()">Отмена</button>
+                    <button style="flex: 1; padding: 15px; font-size: 14px; border-radius: 40px; font-family: 'Montserrat', sans-serif; font-weight: 700; text-transform: uppercase; cursor: pointer; background: transparent; color: var(--dark); border: 2px solid var(--border-color);" onclick="closeDeleteModal()">Отмена</button>
                     <button style="flex: 1; padding: 15px; font-size: 14px; border-radius: 40px; font-family: 'Montserrat', sans-serif; font-weight: 700; text-transform: uppercase; cursor: pointer; background: #e74c3c; color: white; border: none;" onclick="executeRemove()">Да, удалить</button>
                 </div>
             </div>
@@ -28,23 +47,34 @@ function createDeleteModal() {
     document.body.insertAdjacentHTML('beforeend', modalHtml);
 }
 
+// ==========================================================================
+// --- ОСНОВНАЯ ЛОГИКА (ВЫПОЛНЯЕТСЯ ПРИ ЗАГРУЗКЕ СТРАНИЦЫ) ---
+// ==========================================================================
 document.addEventListener("DOMContentLoaded", () => {
+    
+    // Создаем модальное окно при загрузке
     createDeleteModal(); 
 
+    // --- 1. АНИМАЦИЯ ШАПКИ ПРИ СКРОЛЛЕ ---
     const header = document.querySelector('.header');
     if (header) {
         window.addEventListener('scroll', () => {
-            if (window.scrollY > 50) header.classList.add('header-scrolled');
-            else header.classList.remove('header-scrolled');
+            if (window.scrollY > 50) {
+                header.classList.add('header-scrolled');
+            } else {
+                header.classList.remove('header-scrolled');
+            }
         });
     }
 
+    // --- 2. ПЕРЕКЛЮЧАТЕЛЬ ТЕМНОЙ/СВЕТЛОЙ ТЕМЫ ---
     const navMenu = document.querySelector('.nav-menu');
     if (navMenu && !document.getElementById('theme-toggle')) {
         const themeBtn = document.createElement('button');
         themeBtn.id = 'theme-toggle';
         themeBtn.className = 'theme-toggle-btn';
         
+        // Проверяем, какая тема была сохранена
         if (localStorage.getItem('lana_theme') === 'dark') {
             document.body.classList.add('dark-theme');
             themeBtn.innerHTML = '<i class="fas fa-sun"></i>';
@@ -52,18 +82,23 @@ document.addEventListener("DOMContentLoaded", () => {
             themeBtn.innerHTML = '<i class="fas fa-moon"></i>';
         }
 
-        const cartBtn = navMenu.querySelector('.cart-btn-nav');
+        // Вставляем кнопку переключения перед кнопкой корзины
+        const cartBtn = navMenu.querySelector('.cart-btn-nav') || navMenu.querySelector('a[href="cart.html"]');
         if (cartBtn) {
             navMenu.insertBefore(themeBtn, cartBtn);
         } else {
             navMenu.appendChild(themeBtn);
         }
 
+        // Логика нажатия на переключатель
         themeBtn.addEventListener('click', () => {
             document.documentElement.classList.add('theme-in-transition');
-            setTimeout(() => { document.documentElement.classList.remove('theme-in-transition'); }, 800);
+            setTimeout(() => { 
+                document.documentElement.classList.remove('theme-in-transition'); 
+            }, 800);
 
             document.body.classList.toggle('dark-theme');
+            
             if (document.body.classList.contains('dark-theme')) {
                 localStorage.setItem('lana_theme', 'dark');
                 themeBtn.innerHTML = '<i class="fas fa-sun"></i>';
@@ -74,6 +109,7 @@ document.addEventListener("DOMContentLoaded", () => {
         });
     }
 
+    // --- 3. ФИЛЬТРАЦИЯ ТОВАРОВ В КАТАЛОГЕ ---
     const categoryBtns = document.querySelectorAll('.category-btn');
     const subcategoryBtns = document.querySelectorAll('.subcategory-btn');
     const productCards = document.querySelectorAll('.card[data-category]');
@@ -85,6 +121,8 @@ document.addEventListener("DOMContentLoaded", () => {
 
     function filterCards() {
         let visibleCount = 0;
+        
+        // Прячем все карточки
         productCards.forEach(card => card.classList.add('hide-anim'));
         if (emptyMsg) emptyMsg.style.display = 'none';
 
@@ -92,9 +130,13 @@ document.addEventListener("DOMContentLoaded", () => {
             productCards.forEach(card => {
                 const cardCat = card.getAttribute('data-category');
                 const cardSubcat = card.getAttribute('data-subcategory') || 'all';
+                
                 let matchCat = (currentCategory === 'all' || cardCat === currentCategory);
                 let matchSubcat = true;
-                if (currentCategory === 'pots' && currentSubcategory !== 'all') { matchSubcat = (cardSubcat === currentSubcategory); }
+                
+                if (currentCategory === 'pots' && currentSubcategory !== 'all') { 
+                    matchSubcat = (cardSubcat === currentSubcategory); 
+                }
 
                 if (matchCat && matchSubcat) {
                     card.style.display = 'flex';
@@ -104,11 +146,17 @@ document.addEventListener("DOMContentLoaded", () => {
                 }
             });
 
-            if (emptyMsg && visibleCount === 0) emptyMsg.style.display = 'block';
+            // Показываем сообщение, если товаров нет
+            if (emptyMsg && visibleCount === 0) {
+                emptyMsg.style.display = 'block';
+            }
 
+            // Плавно показываем отфильтрованные карточки
             setTimeout(() => {
                 productCards.forEach(card => {
-                    if (card.style.display === 'flex') card.classList.remove('hide-anim');
+                    if (card.style.display === 'flex') {
+                        card.classList.remove('hide-anim');
+                    }
                 });
             }, 20);
         }, 300);
@@ -118,6 +166,7 @@ document.addEventListener("DOMContentLoaded", () => {
         categoryBtns.forEach(btn => {
             btn.addEventListener('click', () => {
                 if (btn.classList.contains('active')) return; 
+                
                 categoryBtns.forEach(b => b.classList.remove('active'));
                 btn.classList.add('active');
                 currentCategory = btn.getAttribute('data-filter');
@@ -126,7 +175,8 @@ document.addEventListener("DOMContentLoaded", () => {
                     if (subcatPots) subcatPots.classList.add('show');
                     currentSubcategory = 'all';
                     subcategoryBtns.forEach(b => b.classList.remove('active'));
-                    document.querySelector('.subcategory-btn[data-subfilter="all"]').classList.add('active');
+                    const allSubBtn = document.querySelector('.subcategory-btn[data-subfilter="all"]');
+                    if (allSubBtn) allSubBtn.classList.add('active');
                 } else {
                     if (subcatPots) subcatPots.classList.remove('show');
                 }
@@ -137,6 +187,7 @@ document.addEventListener("DOMContentLoaded", () => {
         subcategoryBtns.forEach(btn => {
             btn.addEventListener('click', () => {
                 if (btn.classList.contains('active')) return;
+                
                 subcategoryBtns.forEach(b => b.classList.remove('active'));
                 btn.classList.add('active');
                 currentSubcategory = btn.getAttribute('data-subfilter');
@@ -145,70 +196,180 @@ document.addEventListener("DOMContentLoaded", () => {
         });
     }
 
+    // --- 4. БАЗА ФОТОГРАФИЙ ДЛЯ ГАЛЕРЕИ ТОВАРОВ ---
     const galleryData = {
-        'page-hanging': ['img/black1.jpg', 'img/black2.jpg', 'img/black3.jpg', 'img/purple1.jpg', 'img/purple2.jpg', 'img/green1.jpg', 'img/orange1.jpg'],
-        'page-floor': ['img/floor1.jpg', 'img/floor2.jpg', 'img/floor3.jpg', 'img/floor4.jpg', 'img/floor5.jpg'],
-        'page-floor-pattern': ['img/floor_pattern1.jpg', 'img/floor_pattern2.jpg'],
-        'page-mushroom': ['img/mushroom1.jpg', 'img/mushroom2.jpg'],
-        'page-hanging2': ['img/hanging2_1.jpg', 'img/hanging2_2.jpg'],
-        'page-floor-pattern2': ['img/floor_pattern_new1.jpg', 'img/floor_pattern_new2.jpg'],
-        'page-floor2': ['img/floor2_1.jpg', 'img/floor2_2.jpg'],
-        'page-trunk': ['img/trunk1.jpg', 'img/trunk2.jpg'],
-        'page-vase': ['img/vase1.jpg', 'img/vase2.jpg'],
-        'page-floor-20l': ['img/floor_20l_1.jpg', 'img/floor_20l_2.jpg'],
-        'page-floor-12l': ['img/floor_12l_1.jpg', 'img/floor_12l_2.jpg'],
-        'page-floor-12l-2': ['img/floor_12l_new1.jpg', 'img/floor_12l_new2.jpg']
+        'page-bundle': [
+            'img/bundle_1.jpg', 
+            'img/bundle_2.jpg'
+        ],
+        'page-egg-24l': [
+            'img/egg24l_1.jpg', 
+            'img/egg24l_2.jpg'
+        ],
+        'page-floor-20l-v2': [
+            'img/floor20l_v2_1.jpg', 
+            'img/floor20l_v2_2.jpg'
+        ],
+        'page-floor-12l-v3': [
+            'img/floor12l_v3_1.jpg', 
+            'img/floor12l_v3_2.jpg'
+        ],
+        'page-floor-12l-v2': [
+            'img/floor12l_v2_1.jpg', 
+            'img/floor12l_v2_2.jpg'
+        ],
+        'page-nest': [
+            'img/nest1.jpg', 
+            'img/nest2.jpg'
+        ],
+        'page-happiness': [
+            'img/happiness1.jpg', 
+            'img/happiness2.jpg'
+        ],
+        'page-hanging': [
+            'img/black1.jpg', 
+            'img/black2.jpg', 
+            'img/black3.jpg', 
+            'img/purple1.jpg', 
+            'img/purple2.jpg', 
+            'img/green1.jpg', 
+            'img/orange1.jpg'
+        ],
+        'page-floor': [
+            'img/floor1.jpg', 
+            'img/floor2.jpg', 
+            'img/floor3.jpg', 
+            'img/floor4.jpg', 
+            'img/floor5.jpg'
+        ],
+        'page-floor-pattern': [
+            'img/floor_pattern1.jpg', 
+            'img/floor_pattern2.jpg'
+        ],
+        'page-mushroom': [
+            'img/mushroom1.jpg', 
+            'img/mushroom2.jpg'
+        ],
+        'page-hanging2': [
+            'img/hanging2_1.jpg', 
+            'img/hanging2_2.jpg'
+        ],
+        'page-floor-pattern2': [
+            'img/floor_pattern_new1.jpg', 
+            'img/floor_pattern_new2.jpg'
+        ],
+        'page-floor2': [
+            'img/floor2_1.jpg', 
+            'img/floor2_2.jpg'
+        ],
+        'page-trunk': [
+            'img/trunk1.jpg', 
+            'img/trunk2.jpg'
+        ],
+        'page-vase': [
+            'img/vase1.jpg', 
+            'img/vase2.jpg'
+        ],
+        'page-floor-20l': [
+            'img/floor_20l_1.jpg', 
+            'img/floor_20l_2.jpg'
+        ],
+        'page-floor-12l': [
+            'img/floor_12l_1.jpg', 
+            'img/floor_12l_2.jpg'
+        ],
+        'page-floor-12l-2': [
+            'img/floor_12l_new1.jpg', 
+            'img/floor_12l_new2.jpg'
+        ]
     };
 
     const pageId = document.body.id;
     const thumbContainer = document.getElementById("thumbContainer");
     const mainPhoto = document.getElementById("mainPhoto");
 
+    // Логика переключения фотографий в галерее
     if (thumbContainer && mainPhoto && galleryData[pageId]) {
         galleryData[pageId].forEach((src, index) => {
             const img = document.createElement("img");
             img.src = src;
             img.className = "thumb" + (index === 0 ? " active-thumb" : "");
+            
             img.addEventListener("click", () => {
                 mainPhoto.style.opacity = "0";
-                setTimeout(() => { mainPhoto.src = src; mainPhoto.style.opacity = "1"; }, 150);
+                setTimeout(() => { 
+                    mainPhoto.src = src; 
+                    mainPhoto.style.opacity = "1"; 
+                }, 150);
+                
                 document.querySelectorAll(".thumb").forEach(t => t.classList.remove("active-thumb"));
                 img.classList.add("active-thumb");
             });
+            
             thumbContainer.appendChild(img);
         });
     }
 
-    const colors = ['#2c2c2c', '#d35400', '#2c7a40', '#5c2c7a', '#f5f5dc', '#8b4513', '#708090', '#000', '#FFF', '#DAA520', '#A0522D', '#696969', '#FF4500', '#BDB76B', '#483D8B', '#B22222', '#CD853F', '#D2691E', '#DEB887', '#E9967A', '#F4A460', '#B8860B', '#2F4F4F', '#008080', '#556B2F', '#808000', '#800000', '#800080', '#000080', '#008000', '#BC8F8F', '#F5F5F5', '#7F8C8D', '#2C3E50', '#ECF0F1', '#D35400', '#E67E22', '#F39C12', '#F1C40F', '#27AE60'];
+    // --- 5. ПАЛИТРА ЦВЕТОВ ---
+    // Развернутый массив цветов для выбора в карточке товара
+    const colors = [
+        '#2c2c2c', '#d35400', '#2c7a40', '#5c2c7a', '#f5f5dc', 
+        '#8b4513', '#708090', '#000000', '#FFFFFF', '#DAA520', 
+        '#A0522D', '#696969', '#FF4500', '#BDB76B', '#483D8B', 
+        '#B22222', '#CD853F', '#D2691E', '#DEB887', '#E9967A', 
+        '#F4A460', '#B8860B', '#2F4F4F', '#008080', '#556B2F', 
+        '#808000', '#800000', '#800080', '#000080', '#008000', 
+        '#BC8F8F', '#F5F5F5', '#7F8C8D', '#2C3E50', '#ECF0F1', 
+        '#D35400', '#E67E22', '#F39C12', '#F1C40F', '#27AE60'
+    ];
+    
     const paletteGrid = document.getElementById("paletteGrid");
+    
     if (paletteGrid) {
         colors.forEach(color => {
             const dot = document.createElement("div");
             dot.className = "palette-dot";
             dot.style.backgroundColor = color;
+            
             dot.addEventListener('click', () => {
-                document.querySelectorAll('.palette-dot').forEach(d => { d.style.borderColor = 'var(--gray)'; d.style.transform = 'scale(1)'; });
+                // Сбрасываем стили со всех кружочков
+                document.querySelectorAll('.palette-dot').forEach(d => { 
+                    d.style.borderColor = 'var(--gray)'; 
+                    d.style.transform = 'scale(1)'; 
+                });
+                // Выделяем нажатый
                 dot.style.borderColor = 'var(--primary)';
                 dot.style.borderWidth = '2px';
                 dot.style.transform = 'scale(1.15)';
             });
+            
             paletteGrid.appendChild(dot);
         });
     }
 
+    // Вызываем функции обновления интерфейса при загрузке
     updateHeaderCart();
     renderProductButtons();
-    if (pageId === 'page-cart') renderCartPage();
+    
+    if (pageId === 'page-cart') {
+        renderCartPage();
+    }
 });
 
+
+// ==========================================================================
+// --- ЛОГИКА ПРОМОКОДОВ (ОБНОВЛЕНО: LANA5) ---
+// ==========================================================================
 window.applyPromo = function() {
     const input = document.getElementById('promo-code-input');
     const msg = document.getElementById('promo-message');
     const code = input.value.trim().toUpperCase(); 
-    if (code === 'LANA10') {
-        discountPercent = 10;
+    
+    // ИЗМЕНЕНИЯ ЗДЕСЬ: LANA5 дает скидку 5%
+    if (code === 'LANA5') {
+        discountPercent = 5;
         msg.className = 'promo-message success';
-        msg.innerHTML = '<i class="fas fa-check-circle"></i> Промокод успешно применен! Скидка 10%';
+        msg.innerHTML = '<i class="fas fa-check-circle"></i> Промокод успешно применен! Скидка 5%';
     } else if (code === '') {
         msg.className = 'promo-message error';
         msg.innerHTML = '<i class="fas fa-exclamation-circle"></i> Введите промокод';
@@ -218,10 +379,17 @@ window.applyPromo = function() {
         msg.innerHTML = '<i class="fas fa-times-circle"></i> Промокод не найден или устарел';
         discountPercent = 0;
     }
+    
     renderCartPage(); 
     updateHeaderCart();
 };
 
+
+// ==========================================================================
+// --- ЛОГИКА УПРАВЛЕНИЯ КОРЗИНОЙ ---
+// ==========================================================================
+
+// Вызов окна удаления
 window.promptRemoveFromCart = function(id) {
     itemToRemoveId = id;
     const modal = document.getElementById('delete-confirm-modal');
@@ -230,6 +398,7 @@ window.promptRemoveFromCart = function(id) {
     }
 };
 
+// Закрытие окна удаления
 window.closeDeleteModal = function() {
     itemToRemoveId = null;
     const modal = document.getElementById('delete-confirm-modal');
@@ -238,31 +407,42 @@ window.closeDeleteModal = function() {
     }
 };
 
+// Подтверждение удаления
 window.executeRemove = function() {
     if (itemToRemoveId) {
         cart = cart.filter(item => item.id !== itemToRemoveId); 
         saveCart(); 
         renderProductButtons();
         updateHeaderCart(); 
-        if (document.body.id === 'page-cart') renderCartPage();
+        
+        if (document.body.id === 'page-cart') {
+            renderCartPage();
+        }
         closeDeleteModal();
     }
 };
 
+// Закрытие модального окна при клике на фон
 window.onclick = function(event) {
     const modal = document.getElementById('delete-confirm-modal');
-    if (event.target === modal) closeDeleteModal();
+    if (event.target === modal) {
+        closeDeleteModal();
+    }
 };
 
+// Обновление цен в шапке
 function updateHeaderCart() {
     const headerPrices = document.querySelectorAll('.header-cart-price');
     let subtotal = 0;
+    
     cart.forEach(item => {
         if(!item.quantity) item.quantity = 1; 
         subtotal += (item.price * item.quantity);
     });
+    
     let discountAmount = Math.round(subtotal * (discountPercent / 100));
     let finalTotal = subtotal - discountAmount;
+    
     headerPrices.forEach(badge => {
         if (finalTotal > 0) {
             badge.style.display = 'inline-block';
@@ -273,13 +453,16 @@ function updateHeaderCart() {
     });
 }
 
+// Отрисовка кнопок "В корзину" / "+ 1 -" на странице товара
 function renderProductButtons() {
     const actionsContainer = document.getElementById('cart-actions');
     if (!actionsContainer) return;
+    
     const id = actionsContainer.getAttribute('data-id');
     const name = actionsContainer.getAttribute('data-name');
     const price = parseInt(actionsContainer.getAttribute('data-price'));
     const img = actionsContainer.getAttribute('data-img');
+    
     const cartItem = cart.find(item => item.id === id);
 
     if (cartItem) {
@@ -304,6 +487,7 @@ function renderProductButtons() {
     }
 }
 
+// Добавление товара
 window.addToCart = function(id, name, price, img) {
     if (!cart.some(item => item.id === id)) { 
         cart.push({ id, name, price, img, quantity: 1 }); 
@@ -313,20 +497,30 @@ window.addToCart = function(id, name, price, img) {
     }
 };
 
+// Полная очистка корзины
 window.clearCart = function() { 
     cart = []; 
     saveCart(); 
     discountPercent = 0; 
-    if(document.getElementById('promo-code-input')) document.getElementById('promo-code-input').value = '';
-    if(document.getElementById('promo-message')) document.getElementById('promo-message').style.display = 'none';
+    
+    const promoInput = document.getElementById('promo-code-input');
+    if(promoInput) promoInput.value = '';
+    
+    const promoMsg = document.getElementById('promo-message');
+    if(promoMsg) promoMsg.style.display = 'none';
+    
     updateHeaderCart(); 
     renderCartPage(); 
 };
 
+// Изменение количества товара
 window.changeQuantity = function(id, delta) {
     const item = cart.find(i => i.id === id);
     if (item) {
-        if (item.quantity + delta <= 0) { promptRemoveFromCart(id); return; }
+        if (item.quantity + delta <= 0) { 
+            promptRemoveFromCart(id); 
+            return; 
+        }
         item.quantity += delta;
         saveCart();
         renderCartPage();
@@ -335,6 +529,7 @@ window.changeQuantity = function(id, delta) {
     }
 };
 
+// Отрисовка страницы корзины
 function renderCartPage() {
     const itemsContainer = document.getElementById('cart-items');
     const summaryBlock = document.getElementById('cart-summary');
@@ -356,7 +551,12 @@ function renderCartPage() {
     itemsContainer.innerHTML = '';
 
     if (cart.length === 0) {
-        itemsContainer.innerHTML = '<div style="text-align:center; padding:50px 0; font-size:18px; color: var(--gray); width: 100%;">Ваша корзина пока пуста. <br><br><button class="btn-main" onclick="window.location.href=\'index.html#catalog\'">В каталог</button></div>';
+        itemsContainer.innerHTML = `
+            <div style="text-align:center; padding:50px 0; font-size:18px; color: var(--gray); width: 100%;">
+                Ваша корзина пока пуста. <br><br>
+                <button class="btn-main" style="margin-top:20px;" onclick="window.location.href='index.html#catalog'">В каталог</button>
+            </div>
+        `;
         if(summaryBlock) summaryBlock.style.display = 'none';
         if(formBlock) formBlock.style.display = 'none';
         if(clearBtn) clearBtn.style.display = 'none';
@@ -364,6 +564,7 @@ function renderCartPage() {
     }
 
     let subtotal = 0;
+    
     cart.forEach(item => {
         if(!item.quantity) item.quantity = 1;
         let itemTotalSum = item.price * item.quantity;
@@ -406,20 +607,31 @@ function renderCartPage() {
     if(clearBtn) clearBtn.style.display = 'block';
 }
 
-// === ОТПРАВКА ЗАКАЗА ЧЕРЕЗ GOOGLE МОСТ (ОБХОД БЛОКИРОВОК) ===
+
+// ==========================================================================
+// --- ОТПРАВКА ЗАКАЗА В TELEGRAM (GOOGLE APPS SCRIPT BRIDGE) ---
+// ==========================================================================
 window.submitOrder = function() {
     try {
         const name = document.getElementById('order-name').value;
         const phone = document.getElementById('order-phone').value;
         const comment = document.getElementById('order-comment').value;
 
-        if(!name || !phone) { alert("❌ Пожалуйста, заполните имя и телефон для связи!"); return; }
+        if(!name || !phone) { 
+            alert("❌ Пожалуйста, заполните имя и телефон для связи!"); 
+            return; 
+        }
 
-        // ССЫЛКА НА ГУГЛ МОСТ
+        // ТВОЯ РАБОЧАЯ ССЫЛКА НА ГУГЛ МОСТ
         const googleBridgeUrl = 'https://script.google.com/macros/s/AKfycbxrHBezQkkcN18Pthq6QdfA_xGNsQi5bDqB0du-Xl0wiVKRYrqFkxYs1SkEzHEyVHCf/exec'; 
 
+        // Формируем текст сообщения
         let orderText = `🚨 *Новый заказ с сайта LANA WOVEN!*\n\n👤 *Имя:* ${name}\n📞 *Телефон:* ${phone}\n`;
-        if (comment) orderText += `💬 *Комментарий:* ${comment}\n`;
+        
+        if (comment) {
+            orderText += `💬 *Комментарий:* ${comment}\n`;
+        }
+        
         orderText += `\n🛒 *Товары:*\n`;
 
         let subtotal = 0;
@@ -432,16 +644,27 @@ window.submitOrder = function() {
 
         let discountAmount = Math.round(subtotal * (discountPercent / 100));
         let finalTotal = subtotal - discountAmount;
-        if (discountPercent > 0) orderText += `\n🎁 *Скидка:* -${discountAmount} ₽`;
+        
+        if (discountPercent > 0) {
+            orderText += `\n🎁 *Скидка:* -${discountAmount} ₽`;
+        }
+        
         orderText += `\n💰 *ИТОГО:* ${finalTotal} ₽`;
 
+        // Показываем окно загрузки
         let loader = document.getElementById('loading-overlay');
         if (!loader) {
-            document.body.insertAdjacentHTML('beforeend', `<div class="loading-overlay" id="loading-overlay"><i class="fas fa-hourglass-half hourglass-spinner"></i><div class="loading-text">Отправляем заказ...</div></div>`);
+            document.body.insertAdjacentHTML('beforeend', `
+                <div class="loading-overlay" id="loading-overlay">
+                    <i class="fas fa-hourglass-half hourglass-spinner"></i>
+                    <div class="loading-text">Отправляем заказ...</div>
+                </div>
+            `);
             loader = document.getElementById('loading-overlay');
         }
         loader.classList.add('active');
 
+        // Отправляем данные
         fetch(googleBridgeUrl, {
             method: 'POST',
             mode: 'no-cors', 
@@ -450,11 +673,18 @@ window.submitOrder = function() {
             body: JSON.stringify({ text: orderText })
         })
         .then(() => {
-            cart = []; saveCart(); discountPercent = 0; updateHeaderCart();
+            // Успешная отправка
+            cart = []; 
+            saveCart(); 
+            discountPercent = 0; 
+            updateHeaderCart();
+            
+            // Прячем корзину и показываем блок успеха
             document.getElementById('cart-items').style.display = 'none';
             document.getElementById('cart-summary').style.display = 'none';
             document.getElementById('cart-form').style.display = 'none';
             document.getElementById('cart-header').style.display = 'none';
+            
             const successBlock = document.getElementById('order-success-block');
             if (successBlock) successBlock.style.display = 'block';
         })
@@ -462,7 +692,12 @@ window.submitOrder = function() {
             alert('⚠️ Ошибка сети. Заказ мог не отправиться. Напишите нам в Телеграм напрямую.');
             console.error(error);
         })
-        .finally(() => { loader.classList.remove('active'); });
+        .finally(() => { 
+            // Убираем загрузку
+            loader.classList.remove('active'); 
+        });
 
-    } catch (error) { alert("⚠️ Ошибка: " + error.message); }
+    } catch (error) { 
+        alert("⚠️ Произошла ошибка: " + error.message); 
+    }
 };

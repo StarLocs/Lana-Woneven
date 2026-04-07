@@ -1,6 +1,5 @@
 /* ==========================================================================
    LANA WOVEN - ПОЛНЫЙ И ИСПРАВЛЕННЫЙ ФАЙЛ СТИЛЕЙ
-   (ФИКС МОБИЛЬНОЙ ОПТИМИЗАЦИИ И НАЕЗЖАНИЯ ТЕКСТА)
    ========================================================================== */
 @import url('https://fonts.googleapis.com/css2?family=Tenor+Sans&family=Montserrat:wght@400;500;600;700;800&display=swap');
 
@@ -135,8 +134,9 @@ body.dark-theme#page-about {
     background: linear-gradient(rgba(0, 0, 0, 0.94), rgba(0, 0, 0, 0.94)), url('img/about_bg.jpg') center/cover fixed; 
 }
 
+/* ИСПРАВЛЕНА ОШИБКА С КАВЫЧКОЙ ЗДЕСЬ! */
 body.dark-theme#page-cart { 
-    background: linear-gradient(rgba(0, 0, 0, 0.92), rgba(0, 0, 0, 0.92)), url('img/cart_bg.jpg) center/cover fixed; 
+    background: linear-gradient(rgba(0, 0, 0, 0.92), rgba(0, 0, 0, 0.92)), url('img/cart_bg.jpg') center/cover fixed; 
 }
 
 /* ==========================================================================

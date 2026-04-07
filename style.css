@@ -697,14 +697,14 @@ body.dark-theme .card:hover, body.dark-theme .info-card:hover, body.dark-theme .
     pointer-events: none; 
 }
 
-/* ФИКС СЪЕЗЖАЮЩИХ ЦЕН */
+/* --- ИСПРАВЛЕННЫЙ БЛОК ДЛЯ ЦЕНЫ И КНОПКИ --- */
 .card-bottom {
     display: flex;
     justify-content: space-between;
     align-items: center;
     gap: 10px;
     margin-top: auto;
-    flex-wrap: nowrap; 
+    flex-wrap: nowrap; /* Не даем элементам перескакивать на новую строку */
 }
 
 .price { 
@@ -712,7 +712,14 @@ body.dark-theme .card:hover, body.dark-theme .info-card:hover, body.dark-theme .
     font-weight: 700; 
     color: var(--primary); 
     margin-bottom: 0; 
-    white-space: nowrap; 
+    white-space: nowrap !important; /* Жесткий запрет на перенос цифр */
+    flex-shrink: 0; /* Запрет на сжатие цены */
+}
+
+.card-bottom .btn-outline {
+    padding: 10px 15px; /* Чуть меньше отступы, чтобы точно влезло */
+    font-size: 13px;
+    white-space: nowrap;
 }
 
 /* ==========================================================================
@@ -1591,7 +1598,7 @@ body.dark-theme .loading-overlay {
 }
 
 /* ==========================================================================
-   📱 МОБИЛЬНАЯ ВЕРСИЯ (АДАПТАЦИЯ)
+   📱 МОБИЛЬНАЯ ВЕРСИЯ (ИСПРАВЛЕНИЕ НАЕЗЖАНИЯ БЛОКОВ)
    ========================================================================== */
 
 @media (max-width: 900px) {
@@ -1600,11 +1607,17 @@ body.dark-theme .loading-overlay {
         gap: 50px; 
         padding-top: 150px;
     }
+    .hero {
+        height: auto;
+        min-height: 100vh;
+        padding-top: 150px;
+        padding-bottom: 60px;
+    }
     .hero-wrapper { 
         flex-direction: column; 
         text-align: center; 
-        gap: 40px; 
-        margin-top: 100px;
+        gap: 60px; 
+        margin-top: 0;
     }
     .hero-content { 
         text-align: center; 
@@ -1616,7 +1629,7 @@ body.dark-theme .loading-overlay {
         flex: auto; 
         width: 100%; 
         max-width: 400px; 
-        margin: 0 auto;
+        margin: 20px auto 0;
     }
     .hero-content h1 { 
         font-size: 3.5rem; 
@@ -1648,6 +1661,10 @@ body.dark-theme .loading-overlay {
 }
 
 @media (max-width: 600px) {
+    .hero {
+        padding-top: 160px;
+        padding-bottom: 50px;
+    }
     .header { 
         flex-direction: column; 
         padding: 15px; 

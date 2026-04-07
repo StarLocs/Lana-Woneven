@@ -1,5 +1,6 @@
 /* ==========================================================================
-   LANA WOVEN - ПОЛНЫЙ И ПОДРОБНЫЙ ФАЙЛ СТИЛЕЙ
+   LANA WOVEN - ПОЛНЫЙ И ИСПРАВЛЕННЫЙ ФАЙЛ СТИЛЕЙ
+   (ФИКС МОБИЛЬНОЙ ОПТИМИЗАЦИИ И НАЕЗЖАНИЯ ТЕКСТА)
    ========================================================================== */
 @import url('https://fonts.googleapis.com/css2?family=Tenor+Sans&family=Montserrat:wght@400;500;600;700;800&display=swap');
 
@@ -135,7 +136,7 @@ body.dark-theme#page-about {
 }
 
 body.dark-theme#page-cart { 
-    background: linear-gradient(rgba(0, 0, 0, 0.92), rgba(0, 0, 0, 0.92)), url('img/cart_bg.jpg') center/cover fixed; 
+    background: linear-gradient(rgba(0, 0, 0, 0.92), rgba(0, 0, 0, 0.92)), url('img/cart_bg.jpg) center/cover fixed; 
 }
 
 /* ==========================================================================
@@ -697,14 +698,14 @@ body.dark-theme .card:hover, body.dark-theme .info-card:hover, body.dark-theme .
     pointer-events: none; 
 }
 
-/* --- ИСПРАВЛЕННЫЙ БЛОК ДЛЯ ЦЕНЫ И КНОПКИ --- */
+/* ФИКС СЪЕЗЖАЮЩИХ ЦЕН */
 .card-bottom {
     display: flex;
     justify-content: space-between;
     align-items: center;
     gap: 10px;
     margin-top: auto;
-    flex-wrap: nowrap; /* Не даем элементам перескакивать на новую строку */
+    flex-wrap: nowrap; 
 }
 
 .price { 
@@ -713,13 +714,7 @@ body.dark-theme .card:hover, body.dark-theme .info-card:hover, body.dark-theme .
     color: var(--primary); 
     margin-bottom: 0; 
     white-space: nowrap !important; /* Жесткий запрет на перенос цифр */
-    flex-shrink: 0; /* Запрет на сжатие цены */
-}
-
-.card-bottom .btn-outline {
-    padding: 10px 15px; /* Чуть меньше отступы, чтобы точно влезло */
-    font-size: 13px;
-    white-space: nowrap;
+    flex-shrink: 0; 
 }
 
 /* ==========================================================================
@@ -1598,7 +1593,7 @@ body.dark-theme .loading-overlay {
 }
 
 /* ==========================================================================
-   📱 МОБИЛЬНАЯ ВЕРСИЯ (ИСПРАВЛЕНИЕ НАЕЗЖАНИЯ БЛОКОВ)
+   📱 МОБИЛЬНАЯ ВЕРСИЯ (ОБНОВЛЕНО И ИСПРАВЛЕНО)
    ========================================================================== */
 
 @media (max-width: 900px) {
@@ -1610,8 +1605,10 @@ body.dark-theme .loading-overlay {
     .hero {
         height: auto;
         min-height: 100vh;
-        padding-top: 150px;
+        /* ГАРАНТИРОВАННЫЙ ОТСТУП СВЕРХУ ЧТОБЫ ТЕКСТ НЕ ЛЕЗ ПОД ХЕДЕР */
+        padding-top: 180px; 
         padding-bottom: 60px;
+        align-items: flex-start; /* Выравнивание по верху */
     }
     .hero-wrapper { 
         flex-direction: column; 
@@ -1621,18 +1618,19 @@ body.dark-theme .loading-overlay {
     }
     .hero-content { 
         text-align: center; 
-    }
-    .hero-content h1, .hero-content p { 
-        text-align: center; 
-    }
-    .promo-hero-card { 
-        flex: auto; 
-        width: 100%; 
-        max-width: 400px; 
-        margin: 20px auto 0;
+        max-width: 100%;
+        padding: 0 20px;
     }
     .hero-content h1 { 
         font-size: 3.5rem; 
+        text-align: center;
+    }
+    .hero-content h1 span {
+        display: inline;
+    }
+    .hero-content p {
+        text-align: center;
+        margin-bottom: 40px;
     }
     .hero::before, .hero::after { 
         display: none; 
@@ -1658,11 +1656,18 @@ body.dark-theme .loading-overlay {
     .footer-container { 
         text-align: center; 
     }
+    .promo-hero-card { 
+        flex: auto; 
+        width: 100%; 
+        max-width: 400px; 
+        margin: 0 auto;
+    }
 }
 
 @media (max-width: 600px) {
     .hero {
-        padding-top: 160px;
+        /* ЕЩЁ БОЛЬШЕ ОТСТУП ДЛЯ ВЫСОКИХ МОБИЛЬНЫХ ХЕДЕРОВ */
+        padding-top: 220px; 
         padding-bottom: 50px;
     }
     .header { 
@@ -1675,13 +1680,13 @@ body.dark-theme .loading-overlay {
         background: rgba(0,0,0,0.95); 
     }
     .logo { 
-        font-size: 22px; 
+        font-size: 20px; /* Лого компактнее */
         text-align: center; 
     }
     .nav-menu { 
         flex-wrap: wrap; 
         justify-content: center; 
-        gap: 12px; 
+        gap: 10px; 
         width: 100%; 
     }
     .nav-menu a { 
@@ -1694,7 +1699,7 @@ body.dark-theme .loading-overlay {
         margin: 0 5px; 
     }
     .cart-btn-nav { 
-        padding: 10px 20px; 
+        padding: 8px 18px; /* Кнопка компактнее */
         font-size: 11px; 
     }
 
@@ -1721,7 +1726,7 @@ body.dark-theme .loading-overlay {
         width: 100%; 
     }
     .section-title { 
-        font-size: 32px; 
+        font-size: 30px; /* Заголовки компактнее */
     }
     .about-title, .why-us-title, .delivery-header h1 { 
         font-size: 2.2rem; 

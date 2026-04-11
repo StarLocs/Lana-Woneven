@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Грибочек из ротанга 20 см — LANA WOVEN</title>
+    <link href="https://fonts.googleapis.com/css2?family=Tenor+Sans&family=Montserrat:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <link rel="stylesheet" href="style.css">
+</head>
+<body id="page-mushroom-20">
+
+    <header class="header">
+        <div class="logo" onclick="location.href='index.html'">LANA WOVEN</div>
+        <nav class="nav-menu">
+            <a href="index.html#catalog">Каталог</a>
+            <a href="about.html">О нас</a>
+            <a href="reviews.html">Отзывы</a>
+            <button class="cart-btn-nav" onclick="location.href='cart.html'">
+                <i class="fas fa-shopping-bag"></i> <span class="header-cart-price"></span>
+            </button>
+        </nav>
+    </header>
+
+    <main class="product-page">
+        <div class="gallery-section reveal">
+            <div class="main-photo-box">
+                <img id="mainPhoto" src="img/mushroom20_1.jpg" alt="Грибочек из ротанга 20 см">
+            </div>
+            <div class="thumbnails-box" id="thumbContainer"></div>
+        </div>
+
+        <div class="info-section reveal delay-1">
+            <h1>Грибочек из ротанга 20 см</h1>
+            <p>Милое украшение для дома и сада. Диаметр шляпки — <b>20 см</b>, высота — <b>20 см</b>. Выполнен из качественного эко-ротанга, устойчиво к любым погодным условиям, включая солнце и дождь.</p>
+            <div class="info-price">999 ₽</div>
+
+            <p style="font-weight: 600; margin-bottom: 15px; color: var(--dark); font-size: 15px;">Выберите цвет (укажите в комментарии):</p>
+            <div class="palette-grid" id="paletteGrid"></div>
+
+            <div id="cart-actions" 
+                 data-id="mushroom-20" 
+                 data-name="Грибочек из ротанга 20 см" 
+                 data-price="999" 
+                 data-img="img/mushroom20_1.jpg">
+            </div>
+        </div>
+    </main>
+
+    <script src="script.js"></script>
+</body>
+</html>

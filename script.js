@@ -1,16 +1,50 @@
 /* ==========================================================================
-   LANA WOVEN - ПОЛНЫЙ СКРИПТ САЙТА (МАКСИМАЛЬНО РАЗВЕРНУТАЯ ВЕРСИЯ)
+   LANA WOVEN - ПОЛНЫЙ СКРИПТ САЙТА С СИСТЕМОЙ ВЫБОРА ЦВЕТА И ФИКСОМ СКРОЛЛА
    ========================================================================== */
 
 // --- ГЛОБАЛЬНЫЕ ПЕРЕМЕННЫЕ ---
 let cart = [];
 let itemToRemoveId = null; 
 let discountPercent = 0; 
+let currentPageSelectedColor = null; 
+
+// --- ФУНКЦИЯ КРАСИВЫХ ВСПЛЫВАЮЩИХ УВЕДОМЛЕНИЙ (ЗАМЕНА АЛЕРТАМ) ---
+function showToast(message, type = 'success') {
+    let container = document.getElementById('toast-container');
+    if (!container) {
+        container = document.createElement('div');
+        container.id = 'toast-container';
+        document.body.appendChild(container);
+    }
+
+    const toast = document.createElement('div');
+    toast.className = `toast toast-${type}`;
+    
+    const icon = type === 'success' ? '<i class="fas fa-check-circle"></i>' : '<i class="fas fa-exclamation-circle"></i>';
+    toast.innerHTML = `${icon} <span>${message}</span>`;
+
+    container.appendChild(toast);
+
+    // Удаляем уведомление через 3 секунды
+    setTimeout(() => {
+        toast.style.animation = 'fadeOutToast 0.4s forwards';
+        setTimeout(() => toast.remove(), 400);
+    }, 3000);
+}
 
 // --- ЗАГРУЗКА КОРЗИНЫ ИЗ ПАМЯТИ БРАУЗЕРА ---
 try { 
     if (localStorage.getItem('lana_cart')) {
         cart = JSON.parse(localStorage.getItem('lana_cart')); 
+        
+        // МИГРАЦИЯ СТАРЫХ КОРЗИН
+        cart = cart.map(item => {
+            if (!item.cartItemId) {
+                item.cartItemId = item.id + '_color_Стандарт';
+                item.colorId = 'Стандарт';
+            }
+            return item;
+        });
     }
 } catch (e) { 
     console.error("Ошибка загрузки корзины", e); 
@@ -52,8 +86,20 @@ function createDeleteModal() {
 // ==========================================================================
 document.addEventListener("DOMContentLoaded", () => {
     
-    // Создаем модальное окно при загрузке
     createDeleteModal(); 
+
+    // --- 0. УМНЫЕ АНИМАЦИИ ПРИ СКРОЛЛЕ (REVEAL) ---
+    const revealElements = document.querySelectorAll('.reveal');
+    const revealObserver = new IntersectionObserver((entries, observer) => {
+        entries.forEach(entry => {
+            if (entry.isIntersecting) {
+                entry.target.classList.add('active');
+                observer.unobserve(entry.target);
+            }
+        });
+    }, { threshold: 0.1, rootMargin: "0px 0px -50px 0px" });
+
+    revealElements.forEach(el => revealObserver.observe(el));
 
     // --- 1. АНИМАЦИЯ ШАПКИ ПРИ СКРОЛЛЕ ---
     const header = document.querySelector('.header');
@@ -74,7 +120,6 @@ document.addEventListener("DOMContentLoaded", () => {
         themeBtn.id = 'theme-toggle';
         themeBtn.className = 'theme-toggle-btn';
         
-        // Проверяем, какая тема была сохранена
         if (localStorage.getItem('lana_theme') === 'dark') {
             document.body.classList.add('dark-theme');
             themeBtn.innerHTML = '<i class="fas fa-sun"></i>';
@@ -82,7 +127,6 @@ document.addEventListener("DOMContentLoaded", () => {
             themeBtn.innerHTML = '<i class="fas fa-moon"></i>';
         }
 
-        // Вставляем кнопку переключения перед кнопкой корзины
         const cartBtn = navMenu.querySelector('.cart-btn-nav') || navMenu.querySelector('a[href="cart.html"]');
         if (cartBtn) {
             navMenu.insertBefore(themeBtn, cartBtn);
@@ -90,7 +134,6 @@ document.addEventListener("DOMContentLoaded", () => {
             navMenu.appendChild(themeBtn);
         }
 
-        // Логика нажатия на переключатель
         themeBtn.addEventListener('click', () => {
             document.documentElement.classList.add('theme-in-transition');
             setTimeout(() => { 
@@ -122,8 +165,12 @@ document.addEventListener("DOMContentLoaded", () => {
     function filterCards() {
         let visibleCount = 0;
         
-        // Прячем все карточки
-        productCards.forEach(card => card.classList.add('hide-anim'));
+        productCards.forEach(card => {
+            card.style.transition = 'all 0.4s ease'; 
+            card.classList.remove('active');
+            card.classList.add('hide-anim');
+        });
+        
         if (emptyMsg) emptyMsg.style.display = 'none';
 
         setTimeout(() => {
@@ -146,20 +193,19 @@ document.addEventListener("DOMContentLoaded", () => {
                 }
             });
 
-            // Показываем сообщение, если товаров нет
             if (emptyMsg && visibleCount === 0) {
                 emptyMsg.style.display = 'block';
             }
 
-            // Плавно показываем отфильтрованные карточки
             setTimeout(() => {
                 productCards.forEach(card => {
                     if (card.style.display === 'flex') {
                         card.classList.remove('hide-anim');
+                        card.classList.add('active');
                     }
                 });
-            }, 20);
-        }, 300);
+            }, 50); 
+        }, 400); 
     }
 
     if (categoryBtns.length > 0 && productCards.length > 0) {
@@ -198,97 +244,35 @@ document.addEventListener("DOMContentLoaded", () => {
 
     // --- 4. БАЗА ФОТОГРАФИЙ ДЛЯ ГАЛЕРЕИ ТОВАРОВ ---
     const galleryData = {
-        'page-bundle': [
-            'img/bundle_1.jpg', 
-            'img/bundle_2.jpg'
-        ],
-        'page-egg-24l': [
-            'img/egg24l_1.jpg', 
-            'img/egg24l_2.jpg'
-        ],
-        'page-floor-20l-v2': [
-            'img/floor20l_v2_1.jpg', 
-            'img/floor20l_v2_2.jpg'
-        ],
-        'page-floor-12l-v3': [
-            'img/floor12l_v3_1.jpg', 
-            'img/floor12l_v3_2.jpg'
-        ],
-        'page-floor-12l-v2': [
-            'img/floor12l_v2_1.jpg', 
-            'img/floor12l_v2_2.jpg'
-        ],
-        'page-nest': [
-            'img/nest1.jpg', 
-            'img/nest2.jpg'
-        ],
-        'page-happiness': [
-            'img/happiness1.jpg', 
-            'img/happiness2.jpg'
-        ],
-        'page-hanging': [
-            'img/black1.jpg', 
-            'img/black2.jpg', 
-            'img/black3.jpg', 
-            'img/purple1.jpg', 
-            'img/purple2.jpg', 
-            'img/green1.jpg', 
-            'img/orange1.jpg'
-        ],
-        'page-floor': [
-            'img/floor1.jpg', 
-            'img/floor2.jpg', 
-            'img/floor3.jpg', 
-            'img/floor4.jpg', 
-            'img/floor5.jpg'
-        ],
-        'page-floor-pattern': [
-            'img/floor_pattern1.jpg', 
-            'img/floor_pattern2.jpg'
-        ],
-        'page-mushroom': [
-            'img/mushroom1.jpg', 
-            'img/mushroom2.jpg'
-        ],
-        'page-hanging2': [
-            'img/hanging2_1.jpg', 
-            'img/hanging2_2.jpg'
-        ],
-        'page-floor-pattern2': [
-            'img/floor_pattern_new1.jpg', 
-            'img/floor_pattern_new2.jpg'
-        ],
-        'page-floor2': [
-            'img/floor2_1.jpg', 
-            'img/floor2_2.jpg'
-        ],
-        'page-trunk': [
-            'img/trunk1.jpg', 
-            'img/trunk2.jpg'
-        ],
-        'page-vase': [
-            'img/vase1.jpg', 
-            'img/vase2.jpg'
-        ],
-        'page-floor-20l': [
-            'img/floor_20l_1.jpg', 
-            'img/floor_20l_2.jpg'
-        ],
-        'page-floor-12l': [
-            'img/floor_12l_1.jpg', 
-            'img/floor_12l_2.jpg'
-        ],
-        'page-floor-12l-2': [
-            'img/floor_12l_new1.jpg', 
-            'img/floor_12l_new2.jpg'
-        ]
+        'page-mushroom-15': ['img/mushroom15_1.jpg', 'img/mushroom15_2.jpg'],
+        'page-mushroom-20': ['img/mushroom20_1.jpg', 'img/mushroom20_2.jpg'],
+        'page-mushroom-30': ['img/mushroom30_1.jpg', 'img/mushroom30_2.jpg'],
+        'page-happiness-decor': ['img/happiness_decor1.jpg', 'img/happiness_decor2.jpg'],
+        'page-bundle': ['img/bundle_1.jpg', 'img/bundle_2.jpg'],
+        'page-egg-24l': ['img/egg24l_1.jpg', 'img/egg24l_2.jpg'],
+        'page-floor-20l-v2': ['img/floor20l_v2_1.jpg', 'img/floor20l_v2_2.jpg'],
+        'page-floor-12l-v3': ['img/floor12l_v3_1.jpg', 'img/floor12l_v3_2.jpg'],
+        'page-floor-12l-v2': ['img/floor12l_v2_1.jpg', 'img/floor12l_v2_2.jpg'],
+        'page-nest': ['img/nest1.jpg', 'img/nest2.jpg'],
+        'page-happiness': ['img/happiness1.jpg', 'img/happiness2.jpg'],
+        'page-hanging': ['img/black1.jpg', 'img/black2.jpg', 'img/black3.jpg', 'img/purple1.jpg', 'img/purple2.jpg', 'img/green1.jpg', 'img/orange1.jpg'],
+        'page-floor': ['img/floor1.jpg', 'img/floor2.jpg', 'img/floor3.jpg', 'img/floor4.jpg', 'img/floor5.jpg'],
+        'page-floor-pattern': ['img/floor_pattern1.jpg', 'img/floor_pattern2.jpg'],
+        'page-mushroom': ['img/mushroom1.jpg', 'img/mushroom2.jpg'],
+        'page-hanging2': ['img/hanging2_1.jpg', 'img/hanging2_2.jpg'],
+        'page-floor-pattern2': ['img/floor_pattern_new1.jpg', 'img/floor_pattern_new2.jpg'],
+        'page-floor2': ['img/floor2_1.jpg', 'img/floor2_2.jpg'],
+        'page-trunk': ['img/trunk1.jpg', 'img/trunk2.jpg'],
+        'page-vase': ['img/vase1.jpg', 'img/vase2.jpg'],
+        'page-floor-20l': ['img/floor_20l_1.jpg', 'img/floor_20l_2.jpg'],
+        'page-floor-12l': ['img/floor_12l_1.jpg', 'img/floor_12l_2.jpg'],
+        'page-floor-12l-2': ['img/floor_12l_new1.jpg', 'img/floor_12l_new2.jpg']
     };
 
     const pageId = document.body.id;
     const thumbContainer = document.getElementById("thumbContainer");
     const mainPhoto = document.getElementById("mainPhoto");
 
-    // Логика переключения фотографий в галерее
     if (thumbContainer && mainPhoto && galleryData[pageId]) {
         galleryData[pageId].forEach((src, index) => {
             const img = document.createElement("img");
@@ -310,8 +294,7 @@ document.addEventListener("DOMContentLoaded", () => {
         });
     }
 
-    // --- 5. ПАЛИТРА ЦВЕТОВ ---
-    // Развернутый массив цветов для выбора в карточке товара
+    // --- 5. ПАЛИТРА ЦВЕТОВ (УМНАЯ СИСТЕМА НУМЕРАЦИИ) ---
     const colors = [
         '#2c2c2c', '#d35400', '#2c7a40', '#5c2c7a', '#f5f5dc', 
         '#8b4513', '#708090', '#000000', '#FFFFFF', '#DAA520', 
@@ -326,28 +309,43 @@ document.addEventListener("DOMContentLoaded", () => {
     const paletteGrid = document.getElementById("paletteGrid");
     
     if (paletteGrid) {
-        colors.forEach(color => {
+        const colorLabel = document.createElement("div");
+        colorLabel.id = "color-selection-label";
+        colorLabel.style.marginTop = "15px";
+        colorLabel.style.marginBottom = "25px";
+        colorLabel.style.fontSize = "15px";
+        colorLabel.style.color = "#e74c3c";
+        colorLabel.style.fontWeight = "600";
+        colorLabel.innerHTML = "<i class='fas fa-exclamation-circle'></i> Цвет не выбран";
+        
+        paletteGrid.parentNode.insertBefore(colorLabel, paletteGrid.nextSibling);
+
+        colors.forEach((color, index) => {
+            let colorNumber = index + 1; // Нумерация от 1 до 40
             const dot = document.createElement("div");
             dot.className = "palette-dot";
             dot.style.backgroundColor = color;
+            dot.title = "Цвет №" + colorNumber; 
             
             dot.addEventListener('click', () => {
-                // Сбрасываем стили со всех кружочков
                 document.querySelectorAll('.palette-dot').forEach(d => { 
                     d.style.borderColor = 'var(--gray)'; 
                     d.style.transform = 'scale(1)'; 
                 });
-                // Выделяем нажатый
                 dot.style.borderColor = 'var(--primary)';
                 dot.style.borderWidth = '2px';
                 dot.style.transform = 'scale(1.15)';
+                
+                currentPageSelectedColor = colorNumber;
+                
+                colorLabel.style.color = "var(--primary)";
+                colorLabel.innerHTML = `<i class='fas fa-check-circle'></i> Выбран цвет: <b>№${colorNumber}</b>`;
             });
             
             paletteGrid.appendChild(dot);
         });
     }
 
-    // Вызываем функции обновления интерфейса при загрузке
     updateHeaderCart();
     renderProductButtons();
     
@@ -356,16 +354,14 @@ document.addEventListener("DOMContentLoaded", () => {
     }
 });
 
-
 // ==========================================================================
-// --- ЛОГИКА ПРОМОКОДОВ (ОБНОВЛЕНО: LANA5) ---
+// --- ЛОГИКА ПРОМОКОДОВ ---
 // ==========================================================================
 window.applyPromo = function() {
     const input = document.getElementById('promo-code-input');
     const msg = document.getElementById('promo-message');
     const code = input.value.trim().toUpperCase(); 
     
-    // ИЗМЕНЕНИЯ ЗДЕСЬ: LANA5 дает скидку 5%
     if (code === 'LANA5') {
         discountPercent = 5;
         msg.className = 'promo-message success';
@@ -384,53 +380,38 @@ window.applyPromo = function() {
     updateHeaderCart();
 };
 
-
 // ==========================================================================
-// --- ЛОГИКА УПРАВЛЕНИЯ КОРЗИНОЙ ---
+// --- ЛОГИКА УПРАВЛЕНИЯ КОРЗИНОЙ С УЧЕТОМ ЦВЕТОВ ---
 // ==========================================================================
 
-// Вызов окна удаления
-window.promptRemoveFromCart = function(id) {
-    itemToRemoveId = id;
+window.promptRemoveFromCart = function(cartItemId) {
+    itemToRemoveId = cartItemId;
     const modal = document.getElementById('delete-confirm-modal');
-    if (modal) {
-        modal.classList.add('active');
-    }
+    if (modal) { modal.classList.add('active'); }
 };
 
-// Закрытие окна удаления
 window.closeDeleteModal = function() {
     itemToRemoveId = null;
     const modal = document.getElementById('delete-confirm-modal');
-    if (modal) {
-        modal.classList.remove('active');
-    }
+    if (modal) { modal.classList.remove('active'); }
 };
 
-// Подтверждение удаления
 window.executeRemove = function() {
     if (itemToRemoveId) {
-        cart = cart.filter(item => item.id !== itemToRemoveId); 
+        cart = cart.filter(item => item.cartItemId !== itemToRemoveId); 
         saveCart(); 
         renderProductButtons();
         updateHeaderCart(); 
-        
-        if (document.body.id === 'page-cart') {
-            renderCartPage();
-        }
+        if (document.body.id === 'page-cart') { renderCartPage(); }
         closeDeleteModal();
     }
 };
 
-// Закрытие модального окна при клике на фон
 window.onclick = function(event) {
     const modal = document.getElementById('delete-confirm-modal');
-    if (event.target === modal) {
-        closeDeleteModal();
-    }
+    if (event.target === modal) { closeDeleteModal(); }
 };
 
-// Обновление цен в шапке
 function updateHeaderCart() {
     const headerPrices = document.querySelectorAll('.header-cart-price');
     let subtotal = 0;
@@ -447,78 +428,118 @@ function updateHeaderCart() {
         if (finalTotal > 0) {
             badge.style.display = 'inline-block';
             badge.innerText = finalTotal + ' ₽';
+            badge.classList.remove('pop-anim');
+            void badge.offsetWidth; 
+            badge.classList.add('pop-anim');
         } else {
             badge.style.display = 'none';
         }
     });
 }
 
-// Отрисовка кнопок "В корзину" / "+ 1 -" на странице товара
 function renderProductButtons() {
     const actionsContainer = document.getElementById('cart-actions');
     if (!actionsContainer) return;
     
-    const id = actionsContainer.getAttribute('data-id');
+    const baseId = actionsContainer.getAttribute('data-id');
     const name = actionsContainer.getAttribute('data-name');
     const price = parseInt(actionsContainer.getAttribute('data-price'));
     const img = actionsContainer.getAttribute('data-img');
     
-    const cartItem = cart.find(item => item.id === id);
+    let itemsInCart = cart.filter(item => item.id === baseId);
+    let totalQty = itemsInCart.reduce((sum, item) => sum + item.quantity, 0);
 
-    if (cartItem) {
-        let currentQty = cartItem.quantity || 1;
-        let currentSum = currentQty * price;
+    if (totalQty > 0) {
+        let totalSum = totalQty * price;
         actionsContainer.innerHTML = `
-            <div style="display: flex; gap: 15px; width: 100%; flex-wrap: wrap;">
-                <div class="cart-qty-controls" style="flex: 1; justify-content: space-between; min-width: 130px; margin: 0;">
-                    <button class="qty-btn" onclick="changeQuantity('${id}', -1)">−</button>
-                    <span class="qty-val">${currentQty}</span>
-                    <button class="qty-btn" onclick="changeQuantity('${id}', 1)">+</button>
+            <div style="background: var(--light); padding: 15px; border-radius: 20px; margin-bottom: 15px; border: 1px solid var(--border-color);">
+                <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 10px;">
+                    <span style="font-size: 14px; font-weight: 600; color: var(--dark);">В корзине: ${totalQty} шт.</span>
+                    <span style="font-size: 14px; font-weight: 700; color: var(--primary);">${totalSum} ₽</span>
                 </div>
-                <button class="btn-main" style="flex: 2; font-size: 13px; padding: 18px 10px; min-width: 160px;" onclick="window.location.href='cart.html'">В корзине: ${currentSum} ₽</button>
+                <button class="btn-main" style="width: 100%; font-size: 13px; padding: 15px;" onclick="window.location.href='cart.html'">Оформить заказ</button>
             </div>
+            
+            <button class="btn-outline" style="width: 100%; margin-bottom: 15px;" onclick="addToCart('${baseId}', '${name}', ${price}, '${img}')">Добавить еще один цвет</button>
             <a href="index.html#catalog" class="btn-return"><i class="fas fa-arrow-left"></i> Вернуться в каталог</a>
         `;
     } else {
         actionsContainer.innerHTML = `
-            <button class="btn-main" style="width: 100%;" onclick="addToCart('${id}', '${name}', ${price}, '${img}')">Добавить в корзину</button>
+            <button class="btn-main" style="width: 100%;" onclick="addToCart('${baseId}', '${name}', ${price}, '${img}')">Добавить в корзину</button>
             <a href="index.html#catalog" class="btn-return"><i class="fas fa-arrow-left"></i> Вернуться в каталог</a>
         `;
     }
 }
 
-// Добавление товара
 window.addToCart = function(id, name, price, img) {
-    if (!cart.some(item => item.id === id)) { 
-        cart.push({ id, name, price, img, quantity: 1 }); 
-        saveCart(); 
-        renderProductButtons(); 
-        updateHeaderCart(); 
+    
+    if (document.getElementById("paletteGrid") && !currentPageSelectedColor) {
+        const label = document.getElementById("color-selection-label");
+        label.style.color = "#e74c3c";
+        label.innerHTML = "<i class='fas fa-exclamation-triangle'></i> Пожалуйста, выберите цвет из палитры выше!";
+        label.style.animation = "shakeError 0.4s ease";
+        setTimeout(() => { label.style.animation = "none"; }, 400);
+        
+        // Всплывашка об ошибке
+        showToast("Выберите цвет перед добавлением", "error");
+        return;
     }
+
+    let finalColor = currentPageSelectedColor || 'Стандарт';
+    let newCartItemId = id + '_color_' + finalColor;
+
+    let existingItem = cart.find(item => item.cartItemId === newCartItemId);
+    
+    if (existingItem) {
+        existingItem.quantity += 1;
+    } else {
+        cart.push({ 
+            id: id, 
+            cartItemId: newCartItemId, 
+            name: name, 
+            price: price, 
+            img: img, 
+            colorId: finalColor, 
+            quantity: 1 
+        }); 
+    }
+
+    currentPageSelectedColor = null;
+    const label = document.getElementById("color-selection-label");
+    if (label) {
+        label.style.color = "var(--gray)";
+        label.innerHTML = "Цвет добавлен! Выберите еще один или перейдите в корзину.";
+        document.querySelectorAll('.palette-dot').forEach(d => { 
+            d.style.borderColor = 'var(--gray)'; 
+            d.style.transform = 'scale(1)'; 
+        });
+    }
+
+    saveCart(); 
+    renderProductButtons(); 
+    updateHeaderCart(); 
+    
+    // Всплывашка об успехе
+    showToast("Товар добавлен в корзину!", "success");
 };
 
-// Полная очистка корзины
 window.clearCart = function() { 
     cart = []; 
     saveCart(); 
     discountPercent = 0; 
-    
     const promoInput = document.getElementById('promo-code-input');
     if(promoInput) promoInput.value = '';
-    
     const promoMsg = document.getElementById('promo-message');
     if(promoMsg) promoMsg.style.display = 'none';
-    
     updateHeaderCart(); 
     renderCartPage(); 
 };
 
-// Изменение количества товара
-window.changeQuantity = function(id, delta) {
-    const item = cart.find(i => i.id === id);
+window.changeQuantity = function(cartItemId, delta) {
+    const item = cart.find(i => i.cartItemId === cartItemId);
     if (item) {
         if (item.quantity + delta <= 0) { 
-            promptRemoveFromCart(id); 
+            promptRemoveFromCart(cartItemId); 
             return; 
         }
         item.quantity += delta;
@@ -529,7 +550,6 @@ window.changeQuantity = function(id, delta) {
     }
 };
 
-// Отрисовка страницы корзины
 function renderCartPage() {
     const itemsContainer = document.getElementById('cart-items');
     const summaryBlock = document.getElementById('cart-summary');
@@ -570,20 +590,26 @@ function renderCartPage() {
         let itemTotalSum = item.price * item.quantity;
         subtotal += itemTotalSum;
 
+        let colorTagHtml = '';
+        if (item.colorId && item.colorId !== 'Стандарт') {
+            colorTagHtml = `<div style="font-size: 13px; color: var(--primary); margin-top: 5px; font-weight: 600;">Цвет: №${item.colorId}</div>`;
+        }
+
         itemsContainer.innerHTML += `
             <div class="cart-item-row">
                 <div class="cart-item-img-wrapper"><img src="${item.img}"></div>
                 <div class="cart-item-details">
                     <div class="cart-item-name">${item.name}</div>
                     <div class="cart-item-price">${item.price} ₽ / шт.</div>
+                    ${colorTagHtml}
                 </div>
                 <div class="cart-qty-controls">
-                    <button class="qty-btn" onclick="changeQuantity('${item.id}', -1)">−</button>
+                    <button class="qty-btn" onclick="changeQuantity('${item.cartItemId}', -1)">−</button>
                     <span class="qty-val">${item.quantity}</span>
-                    <button class="qty-btn" onclick="changeQuantity('${item.id}', 1)">+</button>
+                    <button class="qty-btn" onclick="changeQuantity('${item.cartItemId}', 1)">+</button>
                 </div>
                 <div class="cart-item-sum">${itemTotalSum} ₽</div>
-                <button class="btn-outline" style="width: auto; padding: 10px 15px; font-size: 0.8rem; border-color: #e74c3c; color: #e74c3c; margin-left: auto;" onclick="promptRemoveFromCart('${item.id}')">✕</button>
+                <button class="btn-outline" style="width: auto; padding: 10px 15px; font-size: 0.8rem; border-color: #e74c3c; color: #e74c3c; margin-left: auto;" onclick="promptRemoveFromCart('${item.cartItemId}')">✕</button>
             </div>
         `;
     });
@@ -607,9 +633,8 @@ function renderCartPage() {
     if(clearBtn) clearBtn.style.display = 'block';
 }
 
-
 // ==========================================================================
-// --- ОТПРАВКА ЗАКАЗА В TELEGRAM (GOOGLE APPS SCRIPT BRIDGE) ---
+// --- ОТПРАВКА ЗАКАЗА В TELEGRAM (С КРАСИВОЙ МАШИНКОЙ И ФИКСОМ СКРОЛЛА) ---
 // ==========================================================================
 window.submitOrder = function() {
     try {
@@ -618,14 +643,12 @@ window.submitOrder = function() {
         const comment = document.getElementById('order-comment').value;
 
         if(!name || !phone) { 
-            alert("❌ Пожалуйста, заполните имя и телефон для связи!"); 
+            showToast("Заполните имя и телефон для связи!", "error");
             return; 
         }
 
-        // ТВОЯ РАБОЧАЯ ССЫЛКА НА ГУГЛ МОСТ
         const googleBridgeUrl = 'https://script.google.com/macros/s/AKfycbxrHBezQkkcN18Pthq6QdfA_xGNsQi5bDqB0du-Xl0wiVKRYrqFkxYs1SkEzHEyVHCf/exec'; 
 
-        // Формируем текст сообщения
         let orderText = `🚨 *Новый заказ с сайта LANA WOVEN!*\n\n👤 *Имя:* ${name}\n📞 *Телефон:* ${phone}\n`;
         
         if (comment) {
@@ -639,7 +662,10 @@ window.submitOrder = function() {
             let qty = item.quantity || 1;
             let sum = item.price * qty;
             subtotal += sum;
-            orderText += `▪️ ${item.name} — ${qty} шт. (${sum} ₽)\n`;
+            
+            let colorInfo = (item.colorId && item.colorId !== 'Стандарт') ? ` (Цвет №${item.colorId})` : '';
+            
+            orderText += `▪️ ${item.name}${colorInfo} — ${qty} шт. (${sum} ₽)\n`;
         });
 
         let discountAmount = Math.round(subtotal * (discountPercent / 100));
@@ -651,7 +677,6 @@ window.submitOrder = function() {
         
         orderText += `\n💰 *ИТОГО:* ${finalTotal} ₽`;
 
-        // Показываем окно загрузки
         let loader = document.getElementById('loading-overlay');
         if (!loader) {
             document.body.insertAdjacentHTML('beforeend', `
@@ -664,7 +689,6 @@ window.submitOrder = function() {
         }
         loader.classList.add('active');
 
-        // Отправляем данные
         fetch(googleBridgeUrl, {
             method: 'POST',
             mode: 'no-cors', 
@@ -673,31 +697,102 @@ window.submitOrder = function() {
             body: JSON.stringify({ text: orderText })
         })
         .then(() => {
-            // Успешная отправка
             cart = []; 
             saveCart(); 
             discountPercent = 0; 
             updateHeaderCart();
             
-            // Прячем корзину и показываем блок успеха
             document.getElementById('cart-items').style.display = 'none';
             document.getElementById('cart-summary').style.display = 'none';
             document.getElementById('cart-form').style.display = 'none';
             document.getElementById('cart-header').style.display = 'none';
             
             const successBlock = document.getElementById('order-success-block');
-            if (successBlock) successBlock.style.display = 'block';
+            if (successBlock) {
+                successBlock.style.display = 'block';
+                
+                // ПРОКРУЧИВАЕМ СТРАНИЦУ НАВЕРХ, чтобы клиент сразу увидел блок
+                window.scrollTo({ top: 0, behavior: 'smooth' });
+
+                successBlock.innerHTML = `
+                    <div style="text-align: center; padding: 20px 10px;">
+                        <h2 style="font-family: 'Tenor Sans', serif; font-size: 32px; color: var(--dark); margin-bottom: 10px;">Заказ успешно оформлен!</h2>
+                        <p style="color: var(--gray); font-size: 15px; margin-bottom: 30px;">Светлана свяжется с вами в ближайшее время. А пока ваш заказ уже готовится к отправке!</p>
+                        
+                        <div class="delivery-anim-box">
+                            <div class="anim-sun"></div>
+                            <div class="anim-tree t1"><i class="fas fa-tree"></i></div>
+                            <div class="anim-tree t2"><i class="fas fa-tree"></i></div>
+                            <div class="anim-house"><i class="fas fa-home"></i></div>
+                            <div class="anim-road"></div>
+                            <div class="anim-truck"><i class="fas fa-truck"></i></div>
+                        </div>
+
+                        <button class="btn-main" onclick="window.location.href='index.html#catalog'" style="margin-top: 15px;">Вернуться в каталог</button>
+                    </div>
+                `;
+            }
         })
         .catch(error => {
-            alert('⚠️ Ошибка сети. Заказ мог не отправиться. Напишите нам в Телеграм напрямую.');
+            showToast('Ошибка сети. Заказ мог не отправиться.', 'error');
             console.error(error);
         })
         .finally(() => { 
-            // Убираем загрузку
             loader.classList.remove('active'); 
         });
 
     } catch (error) { 
-        alert("⚠️ Произошла ошибка: " + error.message); 
+        showToast("Произошла ошибка: " + error.message, 'error'); 
+    }
+};
+
+window.submitReview = function() {
+    try {
+        const name = document.getElementById('review-name').value;
+        const text = document.getElementById('review-text').value;
+
+        if(!name || !text) { 
+            showToast("Заполните имя и текст отзыва!", "error");
+            return; 
+        }
+
+        const googleBridgeUrl = 'https://script.google.com/macros/s/AKfycbxrHBezQkkcN18Pthq6QdfA_xGNsQi5bDqB0du-Xl0wiVKRYrqFkxYs1SkEzHEyVHCf/exec'; 
+
+        let reviewMessage = `💌 *Новый отзыв с сайта!*\n\n👤 *От кого:* ${name}\n💬 *Текст:* ${text}`;
+
+        let loader = document.getElementById('loading-overlay');
+        if (!loader) {
+            document.body.insertAdjacentHTML('beforeend', `
+                <div class="loading-overlay" id="loading-overlay">
+                    <i class="fas fa-hourglass-half hourglass-spinner"></i>
+                    <div class="loading-text">Отправляем отзыв...</div>
+                </div>
+            `);
+            loader = document.getElementById('loading-overlay');
+        }
+        loader.classList.add('active');
+
+        fetch(googleBridgeUrl, {
+            method: 'POST',
+            mode: 'no-cors', 
+            cache: 'no-cache',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ text: reviewMessage })
+        })
+        .then(() => {
+            showToast("Отзыв успешно отправлен!", "success");
+            document.getElementById('review-name').value = '';
+            document.getElementById('review-text').value = '';
+        })
+        .catch(error => {
+            showToast('Ошибка сети. Отзыв не отправлен.', 'error');
+            console.error(error);
+        })
+        .finally(() => { 
+            loader.classList.remove('active'); 
+        });
+
+    } catch (error) { 
+        showToast("Произошла ошибка: " + error.message, 'error'); 
     }
 };

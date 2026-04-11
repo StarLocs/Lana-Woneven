@@ -3,88 +3,283 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Оплата и доставка — LANA WOVEN</title>
-    <link href="https://fonts.googleapis.com/css2?family=Tenor+Sans&family=Montserrat:wght@400;600;700;800&display=swap" rel="stylesheet">
+    <title>Заказ, Доставка и Оплата | LANA WOVEN</title>
+    <link href="https://fonts.googleapis.com/css2?family=Tenor+Sans&family=Montserrat:wght@300;400;500;600;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
     <link rel="stylesheet" href="style.css">
+    
+    <style>
+        /* Глобальные стили специально для этой страницы */
+        body#page-delivery {
+            background-color: #0c0c0c; /* Ещё глубже чёрный */
+            color: #f9f9f9;
+            font-family: 'Montserrat', sans-serif;
+            overflow-x: hidden;
+        }
+
+        /* Обёртка контента с большим отступом от фиксированной шапки */
+        .delivery-wrapper {
+            padding-top: 180px; /* Чтобы шапка не закрывала заголовок */
+            padding-bottom: 100px;
+            max-width: 1100px;
+            margin: 0 auto;
+            padding-left: 20px;
+            padding-right: 20px;
+        }
+
+        /* Главный заголовок с золотым градиентом */
+        .main-title {
+            text-align: center;
+            font-family: 'Tenor Sans', serif;
+            font-size: 3rem;
+            margin-bottom: 60px;
+            text-transform: uppercase;
+            letter-spacing: 4px;
+            background: linear-gradient(135deg, #fff 0%, #c47b4d 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            text-shadow: 0 4px 10px rgba(196, 123, 77, 0.2);
+        }
+
+        /* Контейнер для блоков (Flex для плавного перетекания) */
+        .info-grid {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 40px;
+            justify-content: center;
+        }
+
+        /* Плавные карточки в стиле "Glassmorphism" */
+        .info-card {
+            flex: 1;
+            min-width: 320px;
+            background: rgba(25, 25, 25, 0.6);
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.05);
+            border-radius: 20px;
+            padding: 40px;
+            box-shadow: 0 20px 50px rgba(0,0,0,0.5);
+            transition: all 0.4s ease-in-out;
+            position: relative;
+            overflow: hidden;
+        }
+
+        /* Эффект свечения при наведении */
+        .info-card:hover {
+            transform: translateY(-10px);
+            border-color: rgba(196, 123, 77, 0.4);
+            box-shadow: 0 30px 60px rgba(196, 123, 77, 0.15);
+        }
+
+        /* Плавная декоративная полоса сверху */
+        .info-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 4px;
+            background: linear-gradient(90deg, #c47b4d, #f1e0c6);
+            opacity: 0.7;
+        }
+
+        /* Заголовки внутри карточек */
+        .card-header {
+            display: flex;
+            align-items: center;
+            margin-bottom: 30px;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+            padding-bottom: 20px;
+        }
+
+        /* Плавные иконки с подсветкой */
+        .card-icon {
+            font-size: 2rem;
+            color: #c47b4d;
+            background: rgba(196, 123, 77, 0.1);
+            width: 70px;
+            height: 70px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border-radius: 50%;
+            margin-right: 20px;
+            box-shadow: inset 0 0 15px rgba(196, 123, 77, 0.2);
+        }
+
+        .card-header h2 {
+            font-family: 'Tenor Sans', serif;
+            font-size: 2rem;
+            margin: 0;
+            color: #fff;
+            letter-spacing: 1px;
+        }
+
+        /* Стили текста */
+        .card-content p {
+            line-height: 1.8;
+            color: #b0b0b0;
+            margin-bottom: 20px;
+            font-size: 1rem;
+            font-weight: 300;
+        }
+
+        .card-content strong {
+            color: #fff;
+            font-weight: 600;
+        }
+
+        /* Золотистые акценты в тексте */
+        .highlight {
+            color: #f1e0c6;
+            font-weight: 500;
+        }
+
+        /* Убираем маркеры списка для плавности */
+        .card-content ul {
+            list-style: none;
+            padding: 0;
+            margin: 0;
+        }
+
+        .card-content li {
+            position: relative;
+            padding-left: 25px;
+            margin-bottom: 15px;
+            color: #b0b0b0;
+            line-height: 1.7;
+        }
+
+        /* Кастомный золотой маркер */
+        .card-content li::before {
+            content: '▫';
+            position: absolute;
+            left: 0;
+            color: #c47b4d;
+            font-weight: bold;
+        }
+
+        /* Блок CTA (призыв к действию) */
+        .cta-section {
+            text-align: center;
+            margin-top: 70px;
+            opacity: 0.9;
+        }
+
+        .cta-section p {
+            font-size: 1.1rem;
+            color: #aaa;
+            margin-bottom: 30px;
+        }
+
+        /* Плавная крутая кнопка */
+        .BTN-main-premium {
+            padding: 18px 50px;
+            font-size: 1.1rem;
+            cursor: pointer;
+            background: linear-gradient(135deg, #c47b4d 0%, #a1633d 100%);
+            color: #fff;
+            border: none;
+            border-radius: 50px; /* Закругленная для плавности */
+            font-family: 'Montserrat', sans-serif;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            transition: all 0.3s ease;
+            box-shadow: 0 10px 30px rgba(196, 123, 77, 0.3);
+            text-decoration: none;
+            display: inline-block;
+        }
+
+        .BTN-main-premium:hover {
+            transform: scale(1.05);
+            box-shadow: 0 15px 40px rgba(196, 123, 77, 0.5);
+            background: linear-gradient(135deg, #d48b5d 0%, #c47b4d 100%);
+        }
+
+        /* Адаптивность для мобилок */
+        @media (max-width: 768px) {
+            .main-title { font-size: 2.2rem; }
+            .delivery-wrapper { padding-top: 140px; }
+            .info-card { padding: 30px; }
+            .card-header h2 { font-size: 1.6rem; }
+        }
+    </style>
 </head>
 <body id="page-delivery">
 
-    <header class="header scrolled">
-        <div class="logo" onclick="location.href='index.html'">LANA WOVEN</div>
+    <div class="header" style="background: rgba(10, 10, 10, 0.95); backdrop-filter: blur(5px); border-bottom: 1px solid #222;">
+        <div class="logo" onclick="location.href='index.html'" style="font-family: 'Tenor Sans', serif; color: #fff; cursor: pointer;">LANA WOVEN</div>
         <nav class="nav-menu">
             <a href="index.html#catalog">Коллекции</a>
             <a href="about.html">О нас</a>
-            <a href="delivery.html" style="color: var(--primary);">Доставка и оплата</a>
+            <a href="reviews.html">Отзывы</a>
+            <a href="delivery.html" class="active" style="color: #c47b4d;">Доставка и оплата</a>
             <a href="contacts.html">Контакты</a>
-            <a href="cart.html" class="cart-btn-nav">Корзина <span class="header-cart-price"></span></a>
+            <button class="cart-btn-nav" onclick="location.href='cart.html'" style="background: none; border: 1px solid #333; color: #fff; padding: 10px 20px; border-radius: 20px;">
+                <i class="fas fa-shopping-bag"></i> <span class="header-cart-price"></span>
+            </button>
         </nav>
-    </header>
+    </div>
 
-    <main class="delivery-container reveal">
-        <div class="delivery-header">
-            <h1>Условия заказа</h1>
-        </div>
+    <div class="delivery-wrapper">
+        
+        <h1 class="main-title">Покупка и Получение</h1>
 
-        <div class="delivery-content">
-            <div class="info-blocks">
-                
-                <div class="info-card reveal delay-1">
-                    <i class="fas fa-truck-fast"></i>
+        <div class="info-grid">
+            
+            <div class="info-card">
+                <div class="card-header">
+                    <div class="card-icon"><i class="fas fa-truck-fast"></i></div>
                     <h2>Доставка</h2>
+                </div>
+                <div class="card-content">
+                    <p>Мы заботимся о том, чтобы ваши уникальные изделия из ротанга прибыли в целости и сохранности. Доставка осуществляется бережно и в срок.</p>
+                    
                     <ul>
-                        <li><b>По Красноармейску:</b> Бесплатная доставка курьером по городу, а также в радиусе ближайших пары километров! Привезем лично в руки.</li>
-                        <li><b>Самовывоз:</b> Доступен бесплатный самовывоз по предварительной договоренности.</li>
-                        <li><b>По России:</b> Отправляем удобными для вас способами (СДЭК, Яндекс.Доставка, пункты выдачи Wildberries). Стоимость и точные сроки доставки в другие регионы обговариваются индивидуально при оформлении заказа.</li>
+                        <li><strong>По Красноармейску:</strong> Бесплатная курьерская доставка «до двери» по городу и в ближайшие окрестности.</li>
+                        <li><strong>Самовывоз:</strong> Вы всегда можете бесплатно забрать свой заказ в г. <span class="highlight">Красноармейск</span> (МО) по предварительной договоренности.</li>
+                        <li><strong>По всей России:</strong> Отправляем надежными транспортными компаниями (СДЭК, Яндекс.Доставка, пункты Wildberries). Стоимость рассчитывается <span class="highlight">индивидуально</span> для каждого заказа.</li>
                     </ul>
                 </div>
+            </div>
 
-                <div class="info-card reveal delay-2">
-                    <i class="fas fa-wallet"></i>
+            <div class="info-card">
+                <div class="card-header">
+                    <div class="card-icon"><i class="fas fa-credit-card"></i></div>
                     <h2>Оплата</h2>
+                </div>
+                <div class="card-content">
+                    <p>Каждое изделие LANA WOVEN — это кропотливый ручной труд. Мы работаем по системе предоплаты, чтобы мастер мог приступить к выполнению вашего заказа.</p>
+                    
                     <ul>
-                        <li><b>Перевод на карту:</b> Удобный и быстрый перевод по номеру телефона или номеру карты после подтверждения деталей заказа мастером.</li>
-                        <li><b>Наличные:</b> Оплата наличными доступна при самовывозе или нашей курьерской доставке по городу.</li>
+                        <li><strong>Перевод на карту:</strong> Безопасная оплата прямым переводом (Сбербанк, Тинькофф) или через СБП после полного согласования деталей заказа.</li>
+                        <li><strong>Наличные:</strong> Доступны при самовывозе или нашей личной курьерской доставке по городу.</li>
                     </ul>
-                </div>
-
-            </div>
-
-            <div class="contact-sidebar reveal delay-2">
-                <h3>Остались вопросы?</h3>
-                <p>Не знаете, какой способ доставки выбрать? Позвоните нам, мы всё рассчитаем и подскажем оптимальный вариант!</p>
-                
-                <a href="tel:+79035162171"><i class="fas fa-phone-alt"></i> +7 (903) 516-21-71</a>
-                <a href="tel:+79684701756"><i class="fas fa-phone-alt"></i> +7 (968) 470-17-56</a>
-                
-                <div style="margin-top: 25px;">
-                    <button class="btn-main" style="width: 100%; padding: 15px; font-size: 13px;" onclick="location.href='index.html#catalog'">Перейти к покупкам</button>
+                    <p style="font-style: italic; font-size: 0.9rem; color: #888; margin-top: 25px;">* Реквизиты для оплаты предоставляются мастером только после подтверждения заказа.</p>
                 </div>
             </div>
-        </div>
-    </main>
 
-    <footer class="footer">
-        <div class="footer-container">
-            <div class="footer-about">
-                <h3>LANA WOVEN</h3>
-                <p>Каждое изделие уникально и плетется вручную с использованием долговечного эко-ротанга.</p>
-            </div>
-            <div class="footer-links">
-                <h3>Информация</h3>
-                <a href="index.html#catalog">Каталог товаров</a>
-                <a href="about.html">О нас</a>
-                <a href="delivery.html">Оплата и доставка</a>
-                <a href="contacts.html">Контакты</a>
-            </div>
-            <div class="footer-contact">
-                <h3>Связь с мастером</h3>
-                <p>По вопросам сотрудничества пишите на почту:</p>
-                <a href="https://e.mail.ru/compose/?to=lanawoven@mail.ru" target="_blank" class="email-link">lanawoven@mail.ru</a>
+        </div>
+
+        <div class="cta-section">
+            <p>Готовы добавить эстетики в свой интерьер?</p>
+            <a href="index.html#catalog" class="BTN-main-premium">Выбрать изделие</a>
+        </div>
+
+    </div>
+
+    <div class="footer-container" style="background: #080808; padding: 60px 20px; border-top: 1px solid #222; color: #888; font-size: 0.9rem; text-align: center;">
+        <div style="max-width: 1200px; margin: 0 auto;">
+            <h3 style="color: #fff; font-family: 'Tenor Sans', serif; font-size: 1.5rem; margin-bottom: 20px; letter-spacing: 2px;">LANA WOVEN</h3>
+            <p style="line-height: 1.8; max-width: 600px; margin: 0 auto 30px;">Эстетика ручной работы из ротанга. Создаем уют с вниманием к каждой детали.</p>
+            <p style="margin-bottom: 10px;">Связь с мастером:</p>
+            <a href="mailto:lanawoven@mail.ru" style="color: #c47b4d; text-decoration: none; font-weight: 500;">lanawoven@mail.ru</a>
+            <div style="margin-top: 40px; border-top: 1px solid #1a1a1a; padding-top: 20px; font-size: 0.8rem;">
+                &copy; 2026 LANA WOVEN. Ручная работа в России.
             </div>
         </div>
-        <div class="footer-bottom">&copy; 2026 LANA WOVEN. Handmade in Russia.</div>
-    </footer>
+    </div>
 
     <script src="script.js"></script>
 </body>

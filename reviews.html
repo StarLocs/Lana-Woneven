@@ -1,0 +1,109 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Отзывы — LANA WOVEN</title>
+    <link href="https://fonts.googleapis.com/css2?family=Tenor+Sans&family=Montserrat:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <link rel="stylesheet" href="style.css">
+</head>
+<body id="page-reviews">
+
+    <header class="header">
+        <div class="logo" onclick="location.href='index.html'">LANA WOVEN</div>
+        <nav class="nav-menu">
+            <a href="index.html#catalog">Коллекции</a>
+            <a href="about.html">О нас</a>
+            <a href="reviews.html" style="color: var(--primary);">Отзывы</a>
+            <a href="delivery.html">Доставка и оплата</a>
+            <a href="contacts.html">Контакты</a>
+            <a href="cart.html" class="cart-btn-nav">Корзина <span class="header-cart-price"></span></a>
+        </nav>
+    </header>
+
+    <main>
+        <section class="reviews-page-wrapper reveal">
+            
+            <div class="reviews-left-col">
+                <h2>Оставить отзыв</h2>
+                <p>Выберите удобный для вас способ поделиться впечатлениями:</p>
+
+                <div class="review-actions-row">
+                    <a href="https://t.me/+ka20Fx1Augc2OGNi" target="_blank" class="review-action-btn tg">
+                        <i class="fab fa-telegram-plane"></i>
+                        <span>В Telegram</span>
+                    </a>
+                    <div class="review-action-btn site" onclick="document.getElementById('review-name').focus()">
+                        <i class="fas fa-pen-fancy"></i>
+                        <span>На сайте</span>
+                    </div>
+                </div>
+
+                <div class="review-form-box">
+                    <input type="text" id="review-name" class="order-input" placeholder="Ваше имя" style="margin-bottom: 15px;">
+                    <textarea id="review-text" class="order-input" placeholder="Напишите пару теплых слов..." rows="4" style="margin-bottom: 20px; resize: none;"></textarea>
+                    <button class="btn-outline" style="width: 100%; border-color: var(--primary); color: var(--primary);" onclick="submitReview()">Отправить отзыв</button>
+                </div>
+            </div>
+
+            <div class="reviews-right-col delay-1 reveal">
+                <h2>Общие отзывы</h2>
+                
+                <div class="published-reviews-list">
+                    <div class="published-review-card">
+                        <div class="rev-header">
+                            <div class="rev-avatar">М</div>
+                            <div class="rev-info">
+                                <h4>Мария</h4>
+                                <span class="rev-date">10 Апреля 2026</span>
+                            </div>
+                        </div>
+                        <p>Потрясающее кашпо! Идеально вписалось в интерьер, качество плетения на высоте. Выглядит очень дорого и стильно. Спасибо Светлане за такую красоту! ❤️</p>
+                    </div>
+
+                    <div class="published-review-card">
+                        <div class="rev-header">
+                            <div class="rev-avatar" style="background: var(--primary);">Е</div>
+                            <div class="rev-info">
+                                <h4>Елена</h4>
+                                <span class="rev-date">5 Апреля 2026</span>
+                            </div>
+                        </div>
+                        <p>Заказывала набор из трех штук (24л, 20л и 12л). Очень вместительные, прочные. Теперь мои пальмы и фикусы смотрятся просто роскошно! Обязательно закажу еще.</p>
+                    </div>
+                </div>
+
+            </div>
+
+        </section>
+    </main>
+
+    <footer class="footer">
+        <div class="footer-container">
+            <div class="footer-about">
+                <h3>LANA WOVEN</h3>
+                <p>Каждое изделие уникально и плетется вручную с использованием долговечного эко-ротанга.</p>
+            </div>
+            <div class="footer-links">
+                <h3>Информация</h3>
+                <a href="index.html#catalog">Каталог товаров</a>
+                <a href="about.html">О нас</a>
+                <a href="reviews.html">Отзывы</a>
+                <a href="delivery.html">Оплата и доставка</a>
+                <a href="contacts.html">Контакты</a>
+            </div>
+            <div class="footer-contact">
+                <h3>Связь с мастером</h3>
+                <p>По вопросам сотрудничества пишите на почту:</p>
+                <a href="https://e.mail.ru/compose/?to=lanawoven@mail.ru" target="_blank" class="email-link">lanawoven@mail.ru</a>
+            </div>
+        </div>
+        <div class="footer-bottom">
+            &copy; 2026 LANA WOVEN. Handmade in Russia.
+        </div>
+    </footer>
+
+    <script src="script.js"></script>
+</body>
+</html>

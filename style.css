@@ -64,7 +64,7 @@ main {
 
 #page-hanging, #page-floor, #page-floor-pattern, #page-hanging2, #page-floor-pattern2, #page-floor2, 
 #page-floor-20l, #page-floor-12l, #page-floor-12l-2, #page-happiness, #page-happiness-decor,
-#page-floor-12l-v2, #page-floor-12l-v3, #page-floor-20l-v2, #page-egg-24l, #page-bundle, #page-reviews { 
+#page-floor-12l-v2, #page-floor-12l-v3, #page-floor-20l-v2, #page-egg-24l, #page-bundle, #page-reviews, #page-product-12l, #page-floor-90l, #page-floor-45l { 
     background: linear-gradient(rgba(251, 251, 253, 0.95), rgba(251, 251, 253, 0.95)), url('img/product_bg.jpg') center/cover fixed; 
 }
 
@@ -83,7 +83,7 @@ body.dark-theme#page-hanging2, body.dark-theme#page-floor-pattern2, body.dark-th
 body.dark-theme#page-floor-20l, body.dark-theme#page-floor-12l, body.dark-theme#page-floor-12l-2, 
 body.dark-theme#page-happiness, body.dark-theme#page-happiness-decor, body.dark-theme#page-floor-12l-v2, 
 body.dark-theme#page-floor-12l-v3, body.dark-theme#page-floor-20l-v2, body.dark-theme#page-egg-24l,
-body.dark-theme#page-bundle, body.dark-theme#page-reviews { 
+body.dark-theme#page-bundle, body.dark-theme#page-reviews, body.dark-theme#page-product-12l, body.dark-theme#page-floor-90l, body.dark-theme#page-floor-45l { 
     background: linear-gradient(rgba(0, 0, 0, 0.92), rgba(0, 0, 0, 0.92)), url('img/product_bg.jpg') center/cover fixed; 
 }
 

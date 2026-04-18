@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Кашпо из ротанга 90л — LANA WOVEN</title>
+    <link href="https://fonts.googleapis.com/css2?family=Tenor+Sans&family=Montserrat:wght@400;600;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <link rel="stylesheet" href="style.css">
+    <style>
+        /* Плавное переливание без скачков */
+        #mainPhoto {
+            transition: opacity 0.25s ease-in-out;
+        }
+    </style>
+</head>
+<body id="page-floor-90l" class="dark-theme">
+
+    <header class="header scrolled">
+        <div class="logo" onclick="location.href='index.html'">LANA WOVEN</div>
+        <nav class="nav-menu">
+            <a href="index.html#catalog">Коллекции</a>
+            <a href="about.html">О нас</a>
+            <a href="delivery.html">Доставка и оплата</a>
+            <a href="contacts.html">Контакты</a>
+            <button class="theme-toggle-btn" title="Сменить тему"><i class="fas fa-sun"></i></button>
+            <a href="cart.html" class="cart-btn-nav">Корзина <span class="header-cart-price"></span></a>
+        </nav>
+    </header>
+
+    <div class="product-page" style="margin-top: 50px;">
+        
+        <div class="gallery-section reveal">
+            <div class="main-photo-box">
+                <img src="img/pot90_1.jpg" id="mainPhoto" alt="Кашпо из ротанга 90л">
+            </div>
+            
+            <div class="thumbnails-box">
+                <img src="img/pot90_1.jpg" class="thumb active-thumb" onclick="changeImageSmooth(this, 'img/pot90_1.jpg')">
+                <img src="img/pot90_2.jpg" class="thumb" onclick="changeImageSmooth(this, 'img/pot90_2.jpg')">
+            </div>
+        </div>
+
+        <div class="info-section reveal delay-1">
+            <h1>Большое кашпо из ротанга 90л</h1>
+            <p>Внушительный объем для серьезных растений. Это кашпо станет идеальным домом для крупных пальм, фикусов или уличных туй. Благодаря прочному каркасу и качественному эко-ротангу, оно сохраняет форму и эстетичный вид долгие годы.</p>
+            
+            <ul style="list-style: none; padding: 0; margin: 20px 0; color: var(--gray); font-size: 15px; line-height: 1.8;">
+                <li><strong>Высота:</strong> 40 см</li>
+                <li><strong>Диаметр:</strong> 66 см</li>
+                <li><strong>Объем:</strong> 90 литров</li>
+            </ul>
+            
+            <div class="info-price">4 999 ₽</div>
+            
+            <div style="margin-bottom: 15px;">
+                <span style="font-size: 14px; font-weight: 700; text-transform: uppercase; display: block; margin-bottom: 5px; color: var(--dark);">Выберите цвет (укажите в комментарии):</span>
+                <span style="font-size: 12px; color: var(--gray);">* более 40 вариаций цвета на ваш выбор</span>
+            </div>
+
+            <div class="palette-grid" id="paletteGrid"></div>
+            
+            <div id="cart-actions" data-id="pot-90l-classic" data-name="Кашпо из ротанга 90л" data-price="4999" data-img="img/pot90_1.jpg"></div>
+        </div>
+    </div>
+
+    <footer class="footer">
+        <div class="footer-container">
+            <div class="footer-about">
+                <h3>LANA WOVEN</h3>
+                <p>Каждое изделие уникально и плетется вручную с использованием долговечного эко-ротанга.</p>
+            </div>
+            <div class="footer-contact">
+                <h3>Связь с мастером</h3>
+                <a href="mailto:lanawoven@mail.ru" target="_blank" class="email-link">lanawoven@mail.ru</a>
+            </div>
+        </div>
+        <div class="footer-bottom">&copy; 2026 LANA WOVEN. Handmade in Russia.</div>
+    </footer>
+
+    <script>
+        function changeImageSmooth(element, src) {
+            const img = document.getElementById('mainPhoto');
+            img.style.opacity = 0; 
+            setTimeout(() => {
+                img.src = src; 
+                img.style.opacity = 1; 
+            }, 250);
+            document.querySelectorAll('.thumb').forEach(t => t.classList.remove('active-thumb'));
+            element.classList.add('active-thumb');
+        }
+    </script>
+    
+    <script src="script.js"></script>
+</body>
+</html>

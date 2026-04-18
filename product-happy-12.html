@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Горшочек счастья 12л — LANA WOVEN</title>
+    <link href="https://fonts.googleapis.com/css2?family=Tenor+Sans&family=Montserrat:wght@400;600;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <link rel="stylesheet" href="style.css">
+    <style>
+        /* Плавное переливание без скачков */
+        #mainPhoto {
+            transition: opacity 0.25s ease-in-out;
+        }
+    </style>
+</head>
+<body id="page-happiness" class="dark-theme">
+
+    <header class="header scrolled">
+        <div class="logo" onclick="location.href='index.html'">LANA WOVEN</div>
+        <nav class="nav-menu">
+            <a href="index.html#catalog">Коллекции</a>
+            <a href="about.html">О нас</a>
+            <a href="delivery.html">Доставка и оплата</a>
+            <a href="contacts.html">Контакты</a>
+            <button class="theme-toggle-btn" title="Сменить тему"><i class="fas fa-sun"></i></button>
+            <a href="cart.html" class="cart-btn-nav">Корзина <span class="header-cart-price"></span></a>
+        </nav>
+    </header>
+
+    <div class="product-page" style="margin-top: 50px;">
+        
+        <div class="gallery-section reveal">
+            <div class="main-photo-box">
+                <img src="img/happy_12l_1.jpg" id="mainPhoto" alt="Горшочек счастья из ротанга 12л">
+            </div>
+            
+            <div class="thumbnails-box">
+                <img src="img/happy_12l_1.jpg" class="thumb active-thumb" onclick="changeImageSmooth(this, 'img/happy_12l_1.jpg')">
+                <img src="img/happy_12l_2.jpg" class="thumb" onclick="changeImageSmooth(this, 'img/happy_12l_2.jpg')">
+            </div>
+        </div>
+
+        <div class="info-section reveal delay-1">
+            <h1>Горшочек счастья из ротанга 12л</h1>
+            <p>Эксклюзивное кашпо из эко-ротанга в форме пузатого горшочка. Идеально подходит для создания уюта и гармонии в вашем доме. Плотное ручное плетение гарантирует долговечность, а уникальная форма станет настоящим украшением интерьера.</p>
+            
+            <div class="info-price">1 499 ₽</div>
+            
+            <div style="margin-bottom: 15px;">
+                <span style="font-size: 14px; font-weight: 700; text-transform: uppercase; display: block; margin-bottom: 5px; color: var(--dark);">Выберите цвет (укажите в комментарии):</span>
+                <span style="font-size: 12px; color: var(--gray);">* более 40 вариаций цвета на ваш выбор</span>
+            </div>
+
+            <div class="palette-grid" id="paletteGrid"></div>
+            
+            <div id="cart-actions" data-id="pot-happy-12l-new" data-name="Горшочек счастья из ротанга 12л" data-price="1499" data-img="img/happy_12l_1.jpg"></div>
+        </div>
+    </div>
+
+    <footer class="footer">
+        <div class="footer-container">
+            <div class="footer-about">
+                <h3>LANA WOVEN</h3>
+                <p>Каждое изделие уникально и плетется вручную с использованием долговечного эко-ротанга.</p>
+            </div>
+            <div class="footer-links">
+                <h3>Информация</h3>
+                <a href="index.html#catalog">Каталог товаров</a>
+                <a href="about.html">О нас</a>
+                <a href="delivery.html">Оплата и доставка</a>
+                <a href="contacts.html">Контакты</a>
+            </div>
+            <div class="footer-contact">
+                <h3>Связь с мастером</h3>
+                <p>По вопросам сотрудничества пишите на почту:</p>
+                <a href="https://e.mail.ru/compose/?to=lanawoven@mail.ru" target="_blank" class="email-link">lanawoven@mail.ru</a>
+            </div>
+        </div>
+        <div class="footer-bottom">&copy; 2026 LANA WOVEN. Handmade in Russia.</div>
+    </footer>
+
+    <script>
+        function changeImageSmooth(element, src) {
+            const img = document.getElementById('mainPhoto');
+            img.style.opacity = 0; 
+            
+            setTimeout(() => {
+                img.src = src; 
+                img.style.opacity = 1; 
+            }, 250);
+            
+            document.querySelectorAll('.thumb').forEach(t => t.classList.remove('active-thumb'));
+            element.classList.add('active-thumb');
+        }
+    </script>
+    
+    <script src="script.js"></script>
+</body>
+</html>

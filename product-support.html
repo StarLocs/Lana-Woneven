@@ -1,0 +1,196 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <script type="text/javascript" >
+       (function(m,e,t,r,i,k,a){m[i]=m[i]||function(){(m[i].a=m[i].a||[]).push(arguments)};
+       m[i].l=1*new Date();
+       for (var j = 0; j < document.scripts.length; j++) {if (document.scripts[j].src === r) { return; }}
+       k=e.createElement(t),a=e.getElementsByTagName(t)[0],k.async=1,k.src=r,a.parentNode.insertBefore(k,a)})
+       (window, document, "script", "https://mc.yandex.ru/metrika/tag.js", "ym");
+
+       ym(108659986, "init", {
+            clickmap:true,
+            trackLinks:true,
+            accurateTrackBounce:true,
+            webvisor:true
+       });
+    </script>
+    <noscript><div><img src="https://mc.yandex.ru/watch/108659986" style="position:absolute; left:-9999px;" alt="" /></div></noscript>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Опора для растений — LANA WOVEN</title>
+    <link href="https://fonts.googleapis.com/css2?family=Tenor+Sans&family=Montserrat:wght@400;600;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <link rel="stylesheet" href="style.css">
+    <style>
+        /* Стили для кнопок выбора комплектов */
+        .bundle-btn {
+            background: transparent;
+            border: 2px solid var(--border-color);
+            color: var(--dark);
+            padding: 15px 20px;
+            border-radius: 12px;
+            cursor: pointer;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            font-family: 'Montserrat', sans-serif;
+            transition: all 0.3s ease;
+            width: 100%;
+            text-align: left;
+            margin-bottom: 10px;
+        }
+        .bundle-btn:hover {
+            border-color: var(--primary);
+        }
+        .bundle-btn.active {
+            border-color: var(--primary);
+            background: var(--light);
+            box-shadow: 0 4px 10px rgba(0,0,0,0.05);
+        }
+        .bundle-btn.gold {
+            border-color: #d4af37;
+        }
+        .bundle-btn.gold.active {
+            background: rgba(212, 175, 55, 0.1);
+            border-color: #d4af37;
+        }
+        .bundle-title {
+            font-size: 14px;
+            font-weight: 600;
+        }
+        .bundle-price {
+            font-size: 16px;
+            font-weight: 800;
+        }
+        .bundle-discount {
+            display: block;
+            font-size: 11px;
+            color: #e74c3c;
+            font-weight: 700;
+            margin-top: 3px;
+        }
+    </style>
+</head>
+<body id="page-support">
+
+    <header class="header scrolled">
+        <div class="logo" onclick="location.href='index.html'">LANA WOVEN</div>
+        <nav class="nav-menu">
+            <a href="index.html#catalog">Коллекции</a>
+            <a href="about.html">О нас</a>
+            <a href="delivery.html">Доставка и оплата</a>
+            <a href="contacts.html">Контакты</a>
+            <a href="cart.html" class="cart-btn-nav">Корзина <span class="header-cart-price"></span></a>
+        </nav>
+    </header>
+
+    <div class="product-page">
+        <div class="gallery-section reveal">
+            <div class="main-photo-box">
+                <img src="img/support_v1_main.jpg" id="mainPhoto" alt="Опора для растений 50х50">
+            </div>
+            <div class="thumbnails-box" id="thumbContainer"></div>
+        </div>
+
+        <div class="info-section reveal delay-1">
+            <h1>Опора для растений 50х50 см</h1>
+            <p>Надежная опора из премиального ротанга для садовых и комнатных растений. Основа конструкции — <strong>оцинкованная сетка</strong>, которая обеспечивает максимальную жесткость и долговечность. Не ржавеет, не гниет и не боится ни солнца, ни затяжных дождей.</p>
+            
+            <div style="background: var(--light); padding: 15px; border-radius: 12px; margin-bottom: 20px; border-left: 4px solid var(--primary);">
+                <p style="margin-bottom: 0; font-size: 14px; font-weight: 600; color: var(--dark);">📐 Изготовление любых размеров по желанию заказчика!</p>
+            </div>
+
+            <div class="info-price" id="display-price">999 ₽</div>
+            
+            <div style="margin-bottom: 25px;">
+                <span style="font-size: 14px; font-weight: 700; text-transform: uppercase; display: block; margin-bottom: 12px;">Выберите количество:</span>
+                
+                <button class="bundle-btn active" onclick="selectBundle(1, 999, 'plant-support-1', this)">
+                    <span class="bundle-title">1 штука</span>
+                    <span class="bundle-price">999 ₽</span>
+                </button>
+                
+                <button class="bundle-btn gold" onclick="selectBundle(3, 2799, 'plant-support-3', this)">
+                    <div>
+                        <span class="bundle-title">Комплект 3 шт</span>
+                        <span class="bundle-discount">Выгода 198 ₽</span>
+                    </div>
+                    <span class="bundle-price">2 799 ₽</span>
+                </button>
+                
+                <button class="bundle-btn gold" onclick="selectBundle(5, 4499, 'plant-support-5', this)">
+                    <div>
+                        <span class="bundle-title">Комплект 5 шт</span>
+                        <span class="bundle-discount">Выгода 496 ₽</span>
+                    </div>
+                    <span class="bundle-price">4 499 ₽</span>
+                </button>
+            </div>
+
+            <div style="margin-bottom: 15px;">
+                <span style="font-size: 14px; font-weight: 700; text-transform: uppercase; display: block; margin-bottom: 5px;">Цвет плетения:</span>
+                <span style="font-size: 12px; color: var(--gray);">* выберите один из 40 оттенков палитры</span>
+            </div>
+
+            <div class="palette-grid" id="paletteGrid"></div>
+            
+            <div id="cart-actions" 
+                 data-id="plant-support-1" 
+                 data-name="Опора для растений 50х50" 
+                 data-price="999" 
+                 data-img="img/support_v1_main.jpg">
+            </div>
+        </div>
+    </div>
+
+    <footer class="footer">
+        <div class="footer-container">
+            <div class="footer-about">
+                <h3>LANA WOVEN</h3>
+                <p>Ручное плетение из долговечного эко-ротанга. Срок службы изделий более 15 лет.</p>
+            </div>
+            <div class="footer-links">
+                <h3>Информация</h3>
+                <a href="index.html#catalog">Каталог</a>
+                <a href="about.html">О нас</a>
+                <a href="delivery.html">Оплата и доставка</a>
+                <a href="contacts.html">Контакты</a>
+            </div>
+            <div class="footer-contact">
+                <h3>Производство</h3>
+                <p>Красноармейск, Московская область</p>
+                <a href="mailto:lanawoven@mail.ru" class="email-link">lanawoven@mail.ru</a>
+            </div>
+        </div>
+        <div class="footer-bottom">&copy; 2026 LANA WOVEN. Handmade in Russia.</div>
+    </footer>
+
+    <script src="script.js"></script>
+    
+    <script>
+        function selectBundle(qty, price, dataId, element) {
+            // Убираем выделение со всех кнопок
+            document.querySelectorAll('.bundle-btn').forEach(btn => btn.classList.remove('active'));
+            // Делаем активной нажатую
+            element.classList.add('active');
+
+            // Меняем цену на странице
+            document.getElementById('display-price').innerText = price.toLocaleString() + ' ₽';
+
+            // Обновляем данные для корзины
+            const actions = document.getElementById('cart-actions');
+            actions.setAttribute('data-id', dataId);
+            actions.setAttribute('data-price', price);
+            
+            const nameSuffix = qty > 1 ? ` (Комплект ${qty} шт)` : '';
+            actions.setAttribute('data-name', 'Опора для растений 50х50' + nameSuffix);
+
+            // Перерисовываем кнопку корзины, если товар уже там
+            if (typeof renderProductButtons === 'function') {
+                renderProductButtons();
+            }
+        }
+    </script>
+</body>
+</html>

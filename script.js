@@ -244,6 +244,8 @@ document.addEventListener("DOMContentLoaded", () => {
 
     // --- 4. БАЗА ФОТОГРАФИЙ ДЛЯ ГАЛЕРЕИ ТОВАРОВ ---
     const galleryData = {
+        'page-support': ['img/support_v1_main.jpg', 'img/support_v1_alt.jpg'],
+        'page-nest-20l': ['img/nest_20l_main.jpg', 'img/nest_20l_alt.jpg'],
         'page-mushroom-15': ['img/mushroom15_1.jpg', 'img/mushroom15_2.jpg'],
         'page-mushroom-20': ['img/mushroom20_1.jpg', 'img/mushroom20_2.jpg'],
         'page-mushroom-30': ['img/mushroom30_1.jpg', 'img/mushroom30_2.jpg'],
@@ -347,7 +349,11 @@ document.addEventListener("DOMContentLoaded", () => {
     }
 
     updateHeaderCart();
-    renderProductButtons();
+    
+    // Рендерим кнопки, только если мы не на странице с кастомной логикой
+    if (typeof window.renderProductButtons === 'function' && pageId !== 'page-support') {
+        renderProductButtons();
+    }
     
     if (pageId === 'page-cart') {
         renderCartPage();
@@ -400,7 +406,7 @@ window.executeRemove = function() {
     if (itemToRemoveId) {
         cart = cart.filter(item => item.cartItemId !== itemToRemoveId); 
         saveCart(); 
-        renderProductButtons();
+        if (typeof window.renderProductButtons === 'function') { renderProductButtons(); }
         updateHeaderCart(); 
         if (document.body.id === 'page-cart') { renderCartPage(); }
         closeDeleteModal();
@@ -516,7 +522,7 @@ window.addToCart = function(id, name, price, img) {
     }
 
     saveCart(); 
-    renderProductButtons(); 
+    if (typeof window.renderProductButtons === 'function') { renderProductButtons(); }
     updateHeaderCart(); 
     
     // Всплывашка об успехе
@@ -546,7 +552,7 @@ window.changeQuantity = function(cartItemId, delta) {
         saveCart();
         renderCartPage();
         updateHeaderCart();
-        renderProductButtons(); 
+        if (typeof window.renderProductButtons === 'function') { renderProductButtons(); } 
     }
 };
 

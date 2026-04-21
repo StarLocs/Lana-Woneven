@@ -246,6 +246,7 @@ document.addEventListener("DOMContentLoaded", () => {
     const galleryData = {
         'page-support': ['img/support_v1_main.jpg', 'img/support_v1_alt.jpg'],
         'page-nest-20l': ['img/nest_20l_main.jpg', 'img/nest_20l_alt.jpg'],
+        'page-floor12-v4': ['img/floor12l_v4_1.jpg', 'img/floor12l_v4_2.jpg'],
         'page-mushroom-15': ['img/mushroom15_1.jpg', 'img/mushroom15_2.jpg'],
         'page-mushroom-20': ['img/mushroom20_1.jpg', 'img/mushroom20_2.jpg'],
         'page-mushroom-30': ['img/mushroom30_1.jpg', 'img/mushroom30_2.jpg'],
@@ -404,10 +405,10 @@ window.closeDeleteModal = function() {
 
 window.executeRemove = function() {
     if (itemToRemoveId) {
-        cart = cart.filter(item => item.cartItemId !== itemToRemoveId); 
+        cart = cart.filter(item => item.cartItemId !== itemToRemoveId);
         saveCart(); 
         if (typeof window.renderProductButtons === 'function') { renderProductButtons(); }
-        updateHeaderCart(); 
+        updateHeaderCart();
         if (document.body.id === 'page-cart') { renderCartPage(); }
         closeDeleteModal();
     }
@@ -421,15 +422,12 @@ window.onclick = function(event) {
 function updateHeaderCart() {
     const headerPrices = document.querySelectorAll('.header-cart-price');
     let subtotal = 0;
-    
     cart.forEach(item => {
         if(!item.quantity) item.quantity = 1; 
         subtotal += (item.price * item.quantity);
     });
-    
     let discountAmount = Math.round(subtotal * (discountPercent / 100));
     let finalTotal = subtotal - discountAmount;
-    
     headerPrices.forEach(badge => {
         if (finalTotal > 0) {
             badge.style.display = 'inline-block';
@@ -454,7 +452,7 @@ function renderProductButtons() {
     
     let itemsInCart = cart.filter(item => item.id === baseId);
     let totalQty = itemsInCart.reduce((sum, item) => sum + item.quantity, 0);
-
+    
     if (totalQty > 0) {
         let totalSum = totalQty * price;
         actionsContainer.innerHTML = `
@@ -493,7 +491,6 @@ window.addToCart = function(id, name, price, img) {
 
     let finalColor = currentPageSelectedColor || 'Стандарт';
     let newCartItemId = id + '_color_' + finalColor;
-
     let existingItem = cart.find(item => item.cartItemId === newCartItemId);
     
     if (existingItem) {
@@ -507,7 +504,7 @@ window.addToCart = function(id, name, price, img) {
             img: img, 
             colorId: finalColor, 
             quantity: 1 
-        }); 
+        });
     }
 
     currentPageSelectedColor = null;
@@ -523,8 +520,7 @@ window.addToCart = function(id, name, price, img) {
 
     saveCart(); 
     if (typeof window.renderProductButtons === 'function') { renderProductButtons(); }
-    updateHeaderCart(); 
-    
+    updateHeaderCart();
     // Всплывашка об успехе
     showToast("Товар добавлен в корзину!", "success");
 };
@@ -545,7 +541,7 @@ window.changeQuantity = function(cartItemId, delta) {
     const item = cart.find(i => i.cartItemId === cartItemId);
     if (item) {
         if (item.quantity + delta <= 0) { 
-            promptRemoveFromCart(cartItemId); 
+            promptRemoveFromCart(cartItemId);
             return; 
         }
         item.quantity += delta;
@@ -579,7 +575,8 @@ function renderCartPage() {
     if (cart.length === 0) {
         itemsContainer.innerHTML = `
             <div style="text-align:center; padding:50px 0; font-size:18px; color: var(--gray); width: 100%;">
-                Ваша корзина пока пуста. <br><br>
+                Ваша корзина пока пуста.
+                <br><br>
                 <button class="btn-main" style="margin-top:20px;" onclick="window.location.href='index.html#catalog'">В каталог</button>
             </div>
         `;
@@ -646,23 +643,24 @@ window.submitOrder = function() {
     try {
         const name = document.getElementById('order-name').value;
         const phone = document.getElementById('order-phone').value;
+        const city = document.getElementById('order-city').value; // НОВОЕ ПОЛЕ
         const comment = document.getElementById('order-comment').value;
 
-        if(!name || !phone) { 
-            showToast("Заполните имя и телефон для связи!", "error");
+        if(!name || !phone || !city) { // ГОРОД ТЕПЕРЬ ОБЯЗАТЕЛЕН
+            showToast("Заполните имя, телефон и город для доставки!", "error");
             return; 
         }
 
-        const googleBridgeUrl = 'https://script.google.com/macros/s/AKfycbxrHBezQkkcN18Pthq6QdfA_xGNsQi5bDqB0du-Xl0wiVKRYrqFkxYs1SkEzHEyVHCf/exec'; 
-
-        let orderText = `🚨 *Новый заказ с сайта LANA WOVEN!*\n\n👤 *Имя:* ${name}\n📞 *Телефон:* ${phone}\n`;
+        const googleBridgeUrl = 'https://script.google.com/macros/s/AKfycbx4UNUpAcac5We1K1UifCRHGpHz07RBmZvMapBPdjYjQy_Ur_oRvFdDwKg2PRke0dHT/exec';
+        
+        let orderText = `🚨 *Новый заказ с сайта LANA WOVEN!*\n\n👤 *Имя:* ${name}\n📞 *Телефон:* ${phone}\n🏙 *Город:* ${city}\n`;
         
         if (comment) {
             orderText += `💬 *Комментарий:* ${comment}\n`;
         }
         
         orderText += `\n🛒 *Товары:*\n`;
-
+        
         let subtotal = 0;
         cart.forEach(item => {
             let qty = item.quantity || 1;
@@ -673,7 +671,7 @@ window.submitOrder = function() {
             
             orderText += `▪️ ${item.name}${colorInfo} — ${qty} шт. (${sum} ₽)\n`;
         });
-
+        
         let discountAmount = Math.round(subtotal * (discountPercent / 100));
         let finalTotal = subtotal - discountAmount;
         
@@ -682,7 +680,7 @@ window.submitOrder = function() {
         }
         
         orderText += `\n💰 *ИТОГО:* ${finalTotal} ₽`;
-
+        
         let loader = document.getElementById('loading-overlay');
         if (!loader) {
             document.body.insertAdjacentHTML('beforeend', `
@@ -719,11 +717,12 @@ window.submitOrder = function() {
                 
                 // ПРОКРУЧИВАЕМ СТРАНИЦУ НАВЕРХ, чтобы клиент сразу увидел блок
                 window.scrollTo({ top: 0, behavior: 'smooth' });
-
+                
                 successBlock.innerHTML = `
                     <div style="text-align: center; padding: 20px 10px;">
                         <h2 style="font-family: 'Tenor Sans', serif; font-size: 32px; color: var(--dark); margin-bottom: 10px;">Заказ успешно оформлен!</h2>
-                        <p style="color: var(--gray); font-size: 15px; margin-bottom: 30px;">Светлана свяжется с вами в ближайшее время. А пока ваш заказ уже готовится к отправке!</p>
+                        <p style="color: var(--gray); font-size: 15px; margin-bottom: 30px;">Светлана свяжется с вами в ближайшее время.
+А пока ваш заказ уже готовится к отправке!</p>
                         
                         <div class="delivery-anim-box">
                             <div class="anim-sun"></div>
@@ -746,7 +745,6 @@ window.submitOrder = function() {
         .finally(() => { 
             loader.classList.remove('active'); 
         });
-
     } catch (error) { 
         showToast("Произошла ошибка: " + error.message, 'error'); 
     }
@@ -762,8 +760,8 @@ window.submitReview = function() {
             return; 
         }
 
-        const googleBridgeUrl = 'https://script.google.com/macros/s/AKfycbxrHBezQkkcN18Pthq6QdfA_xGNsQi5bDqB0du-Xl0wiVKRYrqFkxYs1SkEzHEyVHCf/exec'; 
-
+        const googleBridgeUrl = 'https://script.google.com/macros/s/AKfycbx4UNUpAcac5We1K1UifCRHGpHz07RBmZvMapBPdjYjQy_Ur_oRvFdDwKg2PRke0dHT/exec';
+        
         let reviewMessage = `💌 *Новый отзыв с сайта!*\n\n👤 *От кого:* ${name}\n💬 *Текст:* ${text}`;
 
         let loader = document.getElementById('loading-overlay');
@@ -777,7 +775,7 @@ window.submitReview = function() {
             loader = document.getElementById('loading-overlay');
         }
         loader.classList.add('active');
-
+        
         fetch(googleBridgeUrl, {
             method: 'POST',
             mode: 'no-cors', 
@@ -797,7 +795,6 @@ window.submitReview = function() {
         .finally(() => { 
             loader.classList.remove('active'); 
         });
-
     } catch (error) { 
         showToast("Произошла ошибка: " + error.message, 'error'); 
     }

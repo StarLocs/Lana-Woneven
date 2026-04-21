@@ -37,8 +37,7 @@ html, body {
 
 /* Плавное появление страницы при загрузке */
 @keyframes fadeInPage {
-    from { opacity: 0;
-}
+    from { opacity: 0; }
     to { opacity: 1; }
 }
 
@@ -64,7 +63,7 @@ main {
 
 #page-hanging, #page-floor, #page-floor-pattern, #page-hanging2, #page-floor-pattern2, #page-floor2, 
 #page-floor-20l, #page-floor-12l, #page-floor-12l-2, #page-happiness, #page-happiness-decor,
-#page-floor-12l-v2, #page-floor-12l-v3, #page-floor-20l-v2, #page-egg-24l, #page-bundle, #page-reviews, #page-product-12l, #page-floor-90l, #page-floor-45l { 
+#page-floor-12l-v2, #page-floor-12l-v3, #page-floor-20l-v2, #page-egg-24l, #page-bundle, #page-reviews, #page-product-12l, #page-floor-90l, #page-floor-45l, #page-floor12-v4 { 
     background: linear-gradient(rgba(251, 251, 253, 0.95), rgba(251, 251, 253, 0.95)), url('img/product_bg.jpg') center/cover fixed;
 }
 
@@ -73,14 +72,10 @@ main {
     background: linear-gradient(rgba(251, 251, 253, 0.95), rgba(251, 251, 253, 0.95)), url('img/garden_bg.jpg') center/cover fixed;
 }
 
-#page-contacts { background: linear-gradient(rgba(251, 251, 253, 0.9), rgba(251, 251, 253, 0.9)), url('img/contacts_bg.jpg') center/cover fixed;
-}
-#page-delivery { background: linear-gradient(rgba(251, 251, 253, 0.96), rgba(251, 251, 253, 0.96)), url('img/delivery_bg.jpg') center/cover fixed;
-}
-#page-about { background: linear-gradient(rgba(251, 251, 253, 0.96), rgba(251, 251, 253, 0.96)), url('img/about_bg.jpg') center/cover fixed;
-}
-#page-cart { background: linear-gradient(rgba(251, 251, 253, 0.95), rgba(251, 251, 253, 0.95)), url('img/cart_bg.jpg') center/cover fixed;
-}
+#page-contacts { background: linear-gradient(rgba(251, 251, 253, 0.9), rgba(251, 251, 253, 0.9)), url('img/contacts_bg.jpg') center/cover fixed; }
+#page-delivery { background: linear-gradient(rgba(251, 251, 253, 0.96), rgba(251, 251, 253, 0.96)), url('img/delivery_bg.jpg') center/cover fixed; }
+#page-about { background: linear-gradient(rgba(251, 251, 253, 0.96), rgba(251, 251, 253, 0.96)), url('img/about_bg.jpg') center/cover fixed; }
+#page-cart { background: linear-gradient(rgba(251, 251, 253, 0.95), rgba(251, 251, 253, 0.95)), url('img/cart_bg.jpg') center/cover fixed; }
 
 /* --- ТЕМНАЯ ТЕМА ДЛЯ ФОНОВ --- */
 body.dark-theme#page-hanging, body.dark-theme#page-floor, body.dark-theme#page-floor-pattern,
@@ -88,7 +83,7 @@ body.dark-theme#page-hanging2, body.dark-theme#page-floor-pattern2, body.dark-th
 body.dark-theme#page-floor-20l, body.dark-theme#page-floor-12l, body.dark-theme#page-floor-12l-2, 
 body.dark-theme#page-happiness, body.dark-theme#page-happiness-decor, body.dark-theme#page-floor-12l-v2, 
 body.dark-theme#page-floor-12l-v3, body.dark-theme#page-floor-20l-v2, body.dark-theme#page-egg-24l,
-body.dark-theme#page-bundle, body.dark-theme#page-reviews, body.dark-theme#page-product-12l, body.dark-theme#page-floor-90l, body.dark-theme#page-floor-45l { 
+body.dark-theme#page-bundle, body.dark-theme#page-reviews, body.dark-theme#page-product-12l, body.dark-theme#page-floor-90l, body.dark-theme#page-floor-45l, body.dark-theme#page-floor12-v4 { 
     background: linear-gradient(rgba(0, 0, 0, 0.92), rgba(0, 0, 0, 0.92)), url('img/product_bg.jpg') center/cover fixed;
 }
 
@@ -98,14 +93,10 @@ body.dark-theme#page-mushroom-15, body.dark-theme#page-trunk, body.dark-theme#pa
     background: linear-gradient(rgba(0, 0, 0, 0.92), rgba(0, 0, 0, 0.92)), url('img/garden_bg.jpg') center/cover fixed;
 }
 
-body.dark-theme#page-contacts { background: linear-gradient(rgba(0, 0, 0, 0.85), rgba(0, 0, 0, 0.85)), url('img/contacts_bg.jpg') center/cover fixed;
-}
-body.dark-theme#page-delivery { background: linear-gradient(rgba(0, 0, 0, 0.94), rgba(0, 0, 0, 0.94)), url('img/delivery_bg.jpg') center/cover fixed;
-}
-body.dark-theme#page-about { background: linear-gradient(rgba(0, 0, 0, 0.94), rgba(0, 0, 0, 0.94)), url('img/about_bg.jpg') center/cover fixed;
-}
-body.dark-theme#page-cart { background: linear-gradient(rgba(0, 0, 0, 0.92), rgba(0, 0, 0, 0.92)), url('img/cart_bg.jpg') center/cover fixed;
-}
+body.dark-theme#page-contacts { background: linear-gradient(rgba(0, 0, 0, 0.85), rgba(0, 0, 0, 0.85)), url('img/contacts_bg.jpg') center/cover fixed; }
+body.dark-theme#page-delivery { background: linear-gradient(rgba(0, 0, 0, 0.94), rgba(0, 0, 0, 0.94)), url('img/delivery_bg.jpg') center/cover fixed; }
+body.dark-theme#page-about { background: linear-gradient(rgba(0, 0, 0, 0.94), rgba(0, 0, 0, 0.94)), url('img/about_bg.jpg') center/cover fixed; }
+body.dark-theme#page-cart { background: linear-gradient(rgba(0, 0, 0, 0.92), rgba(0, 0, 0, 0.92)), url('img/cart_bg.jpg') center/cover fixed; }
 
 /* ==========================================================================
    ШАПКА (HEADER)
@@ -150,8 +141,7 @@ body.dark-theme .header.header-scrolled {
     transition: color 0.3s ease; 
 }
 
-.logo:hover { opacity: 0.7;
-}
+.logo:hover { opacity: 0.7; }
 
 .nav-menu { 
     display: flex; 
@@ -323,11 +313,9 @@ body.dark-theme .hero::before, body.dark-theme .hero::after {
 
 /* КАРТОЧКА СПЕЦПРЕДЛОЖЕНИЯ С АНИМАЦИЕЙ ПАРЕНИЯ */
 @keyframes float {
-    0% { transform: translateY(0px);
-}
+    0% { transform: translateY(0px); }
     50% { transform: translateY(-15px); }
-    100% { transform: translateY(0px);
-}
+    100% { transform: translateY(0px); }
 }
 
 .promo-hero-card {
@@ -398,8 +386,7 @@ body.dark-theme .promo-hero-card {
     line-height: 1.5;
 }
 
-.promo-desc b { color: var(--dark);
-}
+.promo-desc b { color: var(--dark); }
 
 .promo-prices {
     display: flex;
@@ -467,8 +454,7 @@ body.dark-theme .promo-hero-card {
 }
 
 .btn-danger { background: #e74c3c; color: white; border: none; }
-.btn-danger:hover { background: #c0392b;
-}
+.btn-danger:hover { background: #c0392b; }
 
 .btn-return { 
     display: inline-flex; 
@@ -482,16 +468,14 @@ body.dark-theme .promo-hero-card {
     position: relative; 
     padding-bottom: 5px; 
 }
-.btn-return i { margin-right: 10px; transition: 0.3s;
-}
+.btn-return i { margin-right: 10px; transition: 0.3s; }
 .btn-return::after { 
     content: ''; position: absolute; bottom: 0; left: 0; width: 0; height: 2px; background: var(--primary);
     transition: var(--transition); 
 }
 .btn-return:hover { color: var(--dark); }
 .btn-return:hover i { transform: translateX(-5px); }
-.btn-return:hover::after { width: 100%;
-}
+.btn-return:hover::after { width: 100%; }
 
 /* ==========================================================================
    КАТАЛОГ И ФИЛЬТРЫ

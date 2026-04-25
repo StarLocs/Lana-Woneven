@@ -1,82 +1,100 @@
 <!DOCTYPE html>
 <html lang="ru">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Гнездо для аиста — LANA WOVEN</title>
-    <link href="https://fonts.googleapis.com/css2?family=Tenor+Sans&family=Montserrat:wght@400;500;600;700;800&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
-    <link rel="stylesheet" href="style.css">
-</head>
-<body id="page-nest">
+    <script type="text/javascript" >
+       (function(m,e,t,r,i,k,a){m[i]=m[i]||function(){(m[i].a=m[i].a||[]).push(arguments)};
+       m[i].l=1*new Date();
+       for (var j = 0; j < document.scripts.length; j++) {if (document.scripts[j].src === r) { return; }}
+       k=e.createElement(t),a=e.getElementsByTagName(t)[0],k.async=1,k.src=r,a.parentNode.insertBefore(k,a)})
+       (window, document, "script", "https://mc.yandex.ru/metrika/tag.js", "ym");
 
-    <header class="header">
+       ym(108659986, "init", {
+            clickmap:true,
+            trackLinks:true,
+            accurateTrackBounce:true,
+            webvisor:true
+       });
+    </script>
+    <noscript><div><img src="https://mc.yandex.ru/watch/108659986" style="position:absolute; left:-9999px;" alt="" /></div></noscript>
+    
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Гнездо для аиста 20л — LANA WOVEN</title>
+    
+    <link href="https://fonts.googleapis.com/css2?family=Tenor+Sans&family=Montserrat:wght@400;600;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <link rel="stylesheet" href="style.css?v=4">
+</head>
+<body id="page-nest-20l">
+
+    <header class="header scrolled">
         <div class="logo" onclick="location.href='index.html'">LANA WOVEN</div>
         <nav class="nav-menu">
-            <a href="index.html#catalog">Каталог</a>
+            <a href="index.html#catalog">Коллекции</a>
             <a href="about.html">О нас</a>
-            <button class="cart-btn-nav" onclick="location.href='cart.html'">
-                <i class="fas fa-shopping-bag"></i> <span class="header-cart-price"></span>
-            </button>
+            <a href="reviews.html">Отзывы</a>
+            <a href="delivery.html">Доставка и оплата</a>
+            <a href="contacts.html">Контакты</a>
+            <a href="cart.html" class="cart-btn-nav">Корзина <span class="header-cart-price"></span></a>
         </nav>
     </header>
 
-    <main class="product-page">
+    <div class="product-page">
         <div class="gallery-section reveal">
             <div class="main-photo-box">
-                <img id="mainPhoto" src="img/nest1.jpg" alt="Гнездо для аиста">
+                <img src="img/nest_20l_main.jpg" id="mainPhoto" alt="Гнездо для аиста 20л">
             </div>
-            <div class="thumbnails-box" id="thumbContainer">
-                </div>
+            <div class="thumbnails-box" id="thumbContainer"></div>
         </div>
 
         <div class="info-section reveal delay-1">
-            <h1>Гнездо для аиста из ротанга</h1>
-            <p>Идеальное украшение для вашего дома или сада. Выполнено вручную из прочного эко-ротанга, который не боится влаги, солнца и перепадов температур. Отличный элемент декора, создающий атмосферу уюта.</p>
+            <h1>Гнездо для аиста 20л</h1>
+            <p>Увеличенный объем 20 литров позволяет создавать по-настоящему масштабные и эффектные садовые композиции. Плетение выполнено вручную из долговечного эко-ротанга, который не боится влаги, морозов и ультрафиолета.</p>
             
-            <div class="info-price" id="current-price">1 399 ₽</div>
-
-            <p style="font-weight: 600; margin-bottom: 15px; color: var(--dark); font-size: 15px;">Выберите объем:</p>
-            <div class="volume-selector">
-                <button class="volume-btn active" onclick="selectVolume(8, 1399, this)">8 литров</button>
-                <button class="volume-btn" onclick="selectVolume(10, 1599, this)">10 литров</button>
+            <div style="background: var(--light); padding: 15px; border-radius: 12px; margin-bottom: 20px;">
+                <p style="margin-bottom: 0; font-size: 14px; color: var(--dark);"><i class="fas fa-leaf" style="color: var(--primary);"></i> Идеально подходит для украшения ландшафта и крупных цветников.</p>
             </div>
 
-            <p style="font-weight: 600; margin-bottom: 15px; color: var(--dark); font-size: 15px;">Цвет на выбор (в комментариях к заказу):</p>
-            <div class="palette-grid" id="paletteGrid">
-                </div>
+            <div class="info-price">2 999 ₽</div>
+            
+            <div style="margin-bottom: 15px;">
+                <span style="font-size: 14px; font-weight: 700; text-transform: uppercase; display: block; margin-bottom: 5px;">Цвет плетения:</span>
+                <span style="font-size: 12px; color: var(--gray);">* выберите один из 40 оттенков палитры</span>
+            </div>
 
+            <div class="palette-grid" id="paletteGrid"></div>
+            
             <div id="cart-actions" 
-                 data-id="nest-8" 
-                 data-name="Гнездо для аиста (8 л)" 
-                 data-price="1399" 
-                 data-img="img/nest1.jpg">
+                 data-id="nest-20l" 
+                 data-name="Гнездо для аиста 20л" 
+                 data-price="2999" 
+                 data-img="img/nest_20l_main.jpg">
             </div>
         </div>
-    </main>
+    </div>
 
-    <script src="script.js"></script>
-    <script>
-        // Специальный скрипт для переключения цены и литража
-        function selectVolume(vol, price, btnElement) {
-            // 1. Убираем выделение со всех кнопок и подсвечиваем нажатую
-            document.querySelectorAll('.volume-btn').forEach(btn => btn.classList.remove('active'));
-            btnElement.classList.add('active');
+    <footer class="footer">
+        <div class="footer-container">
+            <div class="footer-about">
+                <h3>LANA WOVEN</h3>
+                <p>Ручное плетение из долговечного эко-ротанга. Срок службы изделий более 15 лет.</p>
+            </div>
+            <div class="footer-links">
+                <h3>Информация</h3>
+                <a href="index.html#catalog">Каталог</a>
+                <a href="about.html">О нас</a>
+                <a href="delivery.html">Оплата и доставка</a>
+                <a href="contacts.html">Контакты</a>
+            </div>
+            <div class="footer-contact">
+                <h3>Производство</h3>
+                <p>Красноармейск, Московская область</p>
+                <a href="mailto:lanawoven@mail.ru" class="email-link">lanawoven@mail.ru</a>
+            </div>
+        </div>
+        <div class="footer-bottom">&copy; 2026 LANA WOVEN. Handmade in Russia.</div>
+    </footer>
 
-            // 2. Обновляем цену на экране
-            document.getElementById('current-price').innerText = price + ' ₽';
-
-            // 3. Обновляем данные для корзины (чтобы добавился нужный литраж)
-            const actions = document.getElementById('cart-actions');
-            actions.setAttribute('data-id', 'nest-' + vol);
-            actions.setAttribute('data-name', 'Гнездо для аиста (' + vol + ' л)');
-            actions.setAttribute('data-price', price);
-
-            // 4. Перерисовываем кнопку "В корзину", чтобы она поняла, что товар изменился
-            if (typeof renderProductButtons === 'function') {
-                renderProductButtons();
-            }
-        }
-    </script>
+    <script src="script.js?v=4"></script>
 </body>
 </html>

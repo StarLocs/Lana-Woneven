@@ -1,14 +1,12 @@
 /* ==========================================================================
-   LANA WOVEN - ПОЛНЫЙ СКРИПТ САЙТА С СИСТЕМОЙ ВЫБОРА ЦВЕТА И ФИКСОМ СКРОЛЛА
+   LANA WOVEN - ПОЛНЫЙ СКРИПТ САЙТА
    ========================================================================== */
 
-// --- ГЛОБАЛЬНЫЕ ПЕРЕМЕННЫЕ ---
 let cart = [];
 let itemToRemoveId = null; 
 let discountPercent = 0; 
 let currentPageSelectedColor = null; 
 
-// --- ФУНКЦИЯ КРАСИВЫХ ВСПЛЫВАЮЩИХ УВЕДОМЛЕНИЙ (ЗАМЕНА АЛЕРТАМ) ---
 function showToast(message, type = 'success') {
     let container = document.getElementById('toast-container');
     if (!container) {
@@ -16,28 +14,20 @@ function showToast(message, type = 'success') {
         container.id = 'toast-container';
         document.body.appendChild(container);
     }
-
     const toast = document.createElement('div');
     toast.className = `toast toast-${type}`;
-    
     const icon = type === 'success' ? '<i class="fas fa-check-circle"></i>' : '<i class="fas fa-exclamation-circle"></i>';
     toast.innerHTML = `${icon} <span>${message}</span>`;
-
     container.appendChild(toast);
-
-    // Удаляем уведомление через 3 секунды
     setTimeout(() => {
         toast.style.animation = 'fadeOutToast 0.4s forwards';
         setTimeout(() => toast.remove(), 400);
     }, 3000);
 }
 
-// --- ЗАГРУЗКА КОРЗИНЫ ИЗ ПАМЯТИ БРАУЗЕРА ---
 try { 
     if (localStorage.getItem('lana_cart')) {
         cart = JSON.parse(localStorage.getItem('lana_cart')); 
-        
-        // МИГРАЦИЯ СТАРЫХ КОРЗИН
         cart = cart.map(item => {
             if (!item.cartItemId) {
                 item.cartItemId = item.id + '_color_Стандарт';
@@ -46,25 +36,16 @@ try {
             return item;
         });
     }
-} catch (e) { 
-    console.error("Ошибка загрузки корзины", e); 
-}
+} catch (e) { console.error("Ошибка загрузки корзины", e); }
 
-// --- СОХРАНЕНИЕ КОРЗИНЫ В ПАМЯТЬ ---
 function saveCart() { 
-    try { 
-        localStorage.setItem('lana_cart', JSON.stringify(cart)); 
-    } catch (e) { 
-        console.error("Ошибка сохранения корзины", e); 
-    } 
+    try { localStorage.setItem('lana_cart', JSON.stringify(cart)); } 
+    catch (e) { console.error("Ошибка сохранения корзины", e); } 
 }
 
-// --- СОЗДАНИЕ КРАСИВОГО ОКНА УДАЛЕНИЯ ТОВАРА ---
 function createDeleteModal() {
     const oldModal = document.getElementById('delete-confirm-modal');
-    if (oldModal) {
-        oldModal.remove();
-    }
+    if (oldModal) oldModal.remove();
 
     const modalHtml = `
         <div class="popup-overlay" id="delete-confirm-modal">
@@ -81,14 +62,9 @@ function createDeleteModal() {
     document.body.insertAdjacentHTML('beforeend', modalHtml);
 }
 
-// ==========================================================================
-// --- ОСНОВНАЯ ЛОГИКА (ВЫПОЛНЯЕТСЯ ПРИ ЗАГРУЗКЕ СТРАНИЦЫ) ---
-// ==========================================================================
 document.addEventListener("DOMContentLoaded", () => {
-    
     createDeleteModal(); 
 
-    // --- 0. УМНЫЕ АНИМАЦИИ ПРИ СКРОЛЛЕ (REVEAL) ---
     const revealElements = document.querySelectorAll('.reveal');
     const revealObserver = new IntersectionObserver((entries, observer) => {
         entries.forEach(entry => {
@@ -98,24 +74,20 @@ document.addEventListener("DOMContentLoaded", () => {
             }
         });
     }, { threshold: 0.1, rootMargin: "0px 0px -50px 0px" });
-
     revealElements.forEach(el => revealObserver.observe(el));
 
-    // --- 1. АНИМАЦИЯ ШАПКИ ПРИ СКРОЛЛЕ ---
     const header = document.querySelector('.header');
     if (header) {
         window.addEventListener('scroll', () => {
-            if (window.scrollY > 50) {
-                header.classList.add('header-scrolled');
-            } else {
-                header.classList.remove('header-scrolled');
-            }
+            if (window.scrollY > 50) header.classList.add('header-scrolled');
+            else header.classList.remove('header-scrolled');
         });
     }
 
-    // --- 2. ПЕРЕКЛЮЧАТЕЛЬ ТЕМНОЙ/СВЕТЛОЙ ТЕМЫ ---
     const navMenu = document.querySelector('.nav-menu');
-    if (navMenu && !document.getElementById('theme-toggle')) {
+    if (navMenu) {
+        document.querySelectorAll('#theme-toggle, .theme-toggle-btn').forEach(btn => btn.remove());
+
         const themeBtn = document.createElement('button');
         themeBtn.id = 'theme-toggle';
         themeBtn.className = 'theme-toggle-btn';
@@ -124,22 +96,17 @@ document.addEventListener("DOMContentLoaded", () => {
             document.body.classList.add('dark-theme');
             themeBtn.innerHTML = '<i class="fas fa-sun"></i>';
         } else {
+            document.body.classList.remove('dark-theme');
             themeBtn.innerHTML = '<i class="fas fa-moon"></i>';
         }
 
         const cartBtn = navMenu.querySelector('.cart-btn-nav') || navMenu.querySelector('a[href="cart.html"]');
-        if (cartBtn) {
-            navMenu.insertBefore(themeBtn, cartBtn);
-        } else {
-            navMenu.appendChild(themeBtn);
-        }
+        if (cartBtn) navMenu.insertBefore(themeBtn, cartBtn);
+        else navMenu.appendChild(themeBtn);
 
         themeBtn.addEventListener('click', () => {
             document.documentElement.classList.add('theme-in-transition');
-            setTimeout(() => { 
-                document.documentElement.classList.remove('theme-in-transition'); 
-            }, 800);
-
+            setTimeout(() => { document.documentElement.classList.remove('theme-in-transition'); }, 800);
             document.body.classList.toggle('dark-theme');
             
             if (document.body.classList.contains('dark-theme')) {
@@ -152,7 +119,6 @@ document.addEventListener("DOMContentLoaded", () => {
         });
     }
 
-    // --- 3. ФИЛЬТРАЦИЯ ТОВАРОВ В КАТАЛОГЕ ---
     const categoryBtns = document.querySelectorAll('.category-btn');
     const subcategoryBtns = document.querySelectorAll('.subcategory-btn');
     const productCards = document.querySelectorAll('.card[data-category]');
@@ -164,26 +130,20 @@ document.addEventListener("DOMContentLoaded", () => {
 
     function filterCards() {
         let visibleCount = 0;
-        
         productCards.forEach(card => {
             card.style.transition = 'all 0.4s ease'; 
             card.classList.remove('active');
             card.classList.add('hide-anim');
         });
-        
         if (emptyMsg) emptyMsg.style.display = 'none';
 
         setTimeout(() => {
             productCards.forEach(card => {
                 const cardCat = card.getAttribute('data-category');
                 const cardSubcat = card.getAttribute('data-subcategory') || 'all';
-                
                 let matchCat = (currentCategory === 'all' || cardCat === currentCategory);
                 let matchSubcat = true;
-                
-                if (currentCategory === 'pots' && currentSubcategory !== 'all') { 
-                    matchSubcat = (cardSubcat === currentSubcategory); 
-                }
+                if (currentCategory === 'pots' && currentSubcategory !== 'all') { matchSubcat = (cardSubcat === currentSubcategory); }
 
                 if (matchCat && matchSubcat) {
                     card.style.display = 'flex';
@@ -193,9 +153,7 @@ document.addEventListener("DOMContentLoaded", () => {
                 }
             });
 
-            if (emptyMsg && visibleCount === 0) {
-                emptyMsg.style.display = 'block';
-            }
+            if (emptyMsg && visibleCount === 0) { emptyMsg.style.display = 'block'; }
 
             setTimeout(() => {
                 productCards.forEach(card => {
@@ -212,7 +170,6 @@ document.addEventListener("DOMContentLoaded", () => {
         categoryBtns.forEach(btn => {
             btn.addEventListener('click', () => {
                 if (btn.classList.contains('active')) return; 
-                
                 categoryBtns.forEach(b => b.classList.remove('active'));
                 btn.classList.add('active');
                 currentCategory = btn.getAttribute('data-filter');
@@ -233,7 +190,6 @@ document.addEventListener("DOMContentLoaded", () => {
         subcategoryBtns.forEach(btn => {
             btn.addEventListener('click', () => {
                 if (btn.classList.contains('active')) return;
-                
                 subcategoryBtns.forEach(b => b.classList.remove('active'));
                 btn.classList.add('active');
                 currentSubcategory = btn.getAttribute('data-subfilter');
@@ -242,8 +198,9 @@ document.addEventListener("DOMContentLoaded", () => {
         });
     }
 
-    // --- 4. БАЗА ФОТОГРАФИЙ ДЛЯ ГАЛЕРЕИ ТОВАРОВ ---
     const galleryData = {
+        'page-bundle-summer': ['img/bundle_summer_1.jpg', 'img/bundle_summer_2.jpg', 'img/bundle_summer_3.jpg'], // <-- НОВЫЙ НАБОР ЗДЕСЬ
+        'page-shoe-12l': ['img/shoe_12l_1.jpg', 'img/shoe_12l_2.jpg', 'img/shoe_12l_3.jpg'],
         'page-support': ['img/support_v1_main.jpg', 'img/support_v1_alt.jpg'],
         'page-nest-20l': ['img/nest_20l_main.jpg', 'img/nest_20l_alt.jpg'],
         'page-floor12-v4': ['img/floor12l_v4_1.jpg', 'img/floor12l_v4_2.jpg'],
@@ -297,7 +254,6 @@ document.addEventListener("DOMContentLoaded", () => {
         });
     }
 
-    // --- 5. ПАЛИТРА ЦВЕТОВ (УМНАЯ СИСТЕМА НУМЕРАЦИИ) ---
     const colors = [
         '#2c2c2c', '#d35400', '#2c7a40', '#5c2c7a', '#f5f5dc', 
         '#8b4513', '#708090', '#000000', '#FFFFFF', '#DAA520', 
@@ -324,7 +280,7 @@ document.addEventListener("DOMContentLoaded", () => {
         paletteGrid.parentNode.insertBefore(colorLabel, paletteGrid.nextSibling);
 
         colors.forEach((color, index) => {
-            let colorNumber = index + 1; // Нумерация от 1 до 40
+            let colorNumber = index + 1; 
             const dot = document.createElement("div");
             dot.className = "palette-dot";
             dot.style.backgroundColor = color;
@@ -351,7 +307,6 @@ document.addEventListener("DOMContentLoaded", () => {
 
     updateHeaderCart();
     
-    // Рендерим кнопки, только если мы не на странице с кастомной логикой
     if (typeof window.renderProductButtons === 'function' && pageId !== 'page-support') {
         renderProductButtons();
     }
@@ -361,9 +316,6 @@ document.addEventListener("DOMContentLoaded", () => {
     }
 });
 
-// ==========================================================================
-// --- ЛОГИКА ПРОМОКОДОВ ---
-// ==========================================================================
 window.applyPromo = function() {
     const input = document.getElementById('promo-code-input');
     const msg = document.getElementById('promo-message');
@@ -387,10 +339,6 @@ window.applyPromo = function() {
     updateHeaderCart();
 };
 
-// ==========================================================================
-// --- ЛОГИКА УПРАВЛЕНИЯ КОРЗИНОЙ С УЧЕТОМ ЦВЕТОВ ---
-// ==========================================================================
-
 window.promptRemoveFromCart = function(cartItemId) {
     itemToRemoveId = cartItemId;
     const modal = document.getElementById('delete-confirm-modal');
@@ -405,10 +353,10 @@ window.closeDeleteModal = function() {
 
 window.executeRemove = function() {
     if (itemToRemoveId) {
-        cart = cart.filter(item => item.cartItemId !== itemToRemoveId);
+        cart = cart.filter(item => item.cartItemId !== itemToRemoveId); 
         saveCart(); 
         if (typeof window.renderProductButtons === 'function') { renderProductButtons(); }
-        updateHeaderCart();
+        updateHeaderCart(); 
         if (document.body.id === 'page-cart') { renderCartPage(); }
         closeDeleteModal();
     }
@@ -422,12 +370,15 @@ window.onclick = function(event) {
 function updateHeaderCart() {
     const headerPrices = document.querySelectorAll('.header-cart-price');
     let subtotal = 0;
+    
     cart.forEach(item => {
         if(!item.quantity) item.quantity = 1; 
         subtotal += (item.price * item.quantity);
     });
+    
     let discountAmount = Math.round(subtotal * (discountPercent / 100));
     let finalTotal = subtotal - discountAmount;
+    
     headerPrices.forEach(badge => {
         if (finalTotal > 0) {
             badge.style.display = 'inline-block';
@@ -452,7 +403,7 @@ function renderProductButtons() {
     
     let itemsInCart = cart.filter(item => item.id === baseId);
     let totalQty = itemsInCart.reduce((sum, item) => sum + item.quantity, 0);
-    
+
     if (totalQty > 0) {
         let totalSum = totalQty * price;
         actionsContainer.innerHTML = `
@@ -484,13 +435,13 @@ window.addToCart = function(id, name, price, img) {
         label.style.animation = "shakeError 0.4s ease";
         setTimeout(() => { label.style.animation = "none"; }, 400);
         
-        // Всплывашка об ошибке
         showToast("Выберите цвет перед добавлением", "error");
         return;
     }
 
     let finalColor = currentPageSelectedColor || 'Стандарт';
     let newCartItemId = id + '_color_' + finalColor;
+
     let existingItem = cart.find(item => item.cartItemId === newCartItemId);
     
     if (existingItem) {
@@ -504,7 +455,7 @@ window.addToCart = function(id, name, price, img) {
             img: img, 
             colorId: finalColor, 
             quantity: 1 
-        });
+        }); 
     }
 
     currentPageSelectedColor = null;
@@ -520,8 +471,8 @@ window.addToCart = function(id, name, price, img) {
 
     saveCart(); 
     if (typeof window.renderProductButtons === 'function') { renderProductButtons(); }
-    updateHeaderCart();
-    // Всплывашка об успехе
+    updateHeaderCart(); 
+    
     showToast("Товар добавлен в корзину!", "success");
 };
 
@@ -541,7 +492,7 @@ window.changeQuantity = function(cartItemId, delta) {
     const item = cart.find(i => i.cartItemId === cartItemId);
     if (item) {
         if (item.quantity + delta <= 0) { 
-            promptRemoveFromCart(cartItemId);
+            promptRemoveFromCart(cartItemId); 
             return; 
         }
         item.quantity += delta;
@@ -575,8 +526,7 @@ function renderCartPage() {
     if (cart.length === 0) {
         itemsContainer.innerHTML = `
             <div style="text-align:center; padding:50px 0; font-size:18px; color: var(--gray); width: 100%;">
-                Ваша корзина пока пуста.
-                <br><br>
+                Ваша корзина пока пуста. <br><br>
                 <button class="btn-main" style="margin-top:20px;" onclick="window.location.href='index.html#catalog'">В каталог</button>
             </div>
         `;
@@ -636,23 +586,20 @@ function renderCartPage() {
     if(clearBtn) clearBtn.style.display = 'block';
 }
 
-// ==========================================================================
-// --- ОТПРАВКА ЗАКАЗА В TELEGRAM (С КРАСИВОЙ МАШИНКОЙ И ФИКСОМ СКРОЛЛА) ---
-// ==========================================================================
 window.submitOrder = function() {
     try {
         const name = document.getElementById('order-name').value;
         const phone = document.getElementById('order-phone').value;
-        const city = document.getElementById('order-city').value; // НОВОЕ ПОЛЕ
+        const city = document.getElementById('order-city').value; 
         const comment = document.getElementById('order-comment').value;
 
-        if(!name || !phone || !city) { // ГОРОД ТЕПЕРЬ ОБЯЗАТЕЛЕН
+        if(!name || !phone || !city) { 
             showToast("Заполните имя, телефон и город для доставки!", "error");
             return; 
         }
 
-        const googleBridgeUrl = 'https://script.google.com/macros/s/AKfycbx4UNUpAcac5We1K1UifCRHGpHz07RBmZvMapBPdjYjQy_Ur_oRvFdDwKg2PRke0dHT/exec';
-        
+        const googleBridgeUrl = 'https://script.google.com/macros/s/AKfycbx4UNUpAcac5We1K1UifCRHGpHz07RBmZvMapBPdjYjQy_Ur_oRvFdDwKg2PRke0dHT/exec'; 
+
         let orderText = `🚨 *Новый заказ с сайта LANA WOVEN!*\n\n👤 *Имя:* ${name}\n📞 *Телефон:* ${phone}\n🏙 *Город:* ${city}\n`;
         
         if (comment) {
@@ -660,7 +607,7 @@ window.submitOrder = function() {
         }
         
         orderText += `\n🛒 *Товары:*\n`;
-        
+
         let subtotal = 0;
         cart.forEach(item => {
             let qty = item.quantity || 1;
@@ -671,7 +618,7 @@ window.submitOrder = function() {
             
             orderText += `▪️ ${item.name}${colorInfo} — ${qty} шт. (${sum} ₽)\n`;
         });
-        
+
         let discountAmount = Math.round(subtotal * (discountPercent / 100));
         let finalTotal = subtotal - discountAmount;
         
@@ -680,7 +627,7 @@ window.submitOrder = function() {
         }
         
         orderText += `\n💰 *ИТОГО:* ${finalTotal} ₽`;
-        
+
         let loader = document.getElementById('loading-overlay');
         if (!loader) {
             document.body.insertAdjacentHTML('beforeend', `
@@ -715,14 +662,12 @@ window.submitOrder = function() {
             if (successBlock) {
                 successBlock.style.display = 'block';
                 
-                // ПРОКРУЧИВАЕМ СТРАНИЦУ НАВЕРХ, чтобы клиент сразу увидел блок
                 window.scrollTo({ top: 0, behavior: 'smooth' });
-                
+
                 successBlock.innerHTML = `
                     <div style="text-align: center; padding: 20px 10px;">
                         <h2 style="font-family: 'Tenor Sans', serif; font-size: 32px; color: var(--dark); margin-bottom: 10px;">Заказ успешно оформлен!</h2>
-                        <p style="color: var(--gray); font-size: 15px; margin-bottom: 30px;">Светлана свяжется с вами в ближайшее время.
-А пока ваш заказ уже готовится к отправке!</p>
+                        <p style="color: var(--gray); font-size: 15px; margin-bottom: 30px;">Светлана свяжется с вами в ближайшее время. А пока ваш заказ уже готовится к отправке!</p>
                         
                         <div class="delivery-anim-box">
                             <div class="anim-sun"></div>
@@ -745,6 +690,7 @@ window.submitOrder = function() {
         .finally(() => { 
             loader.classList.remove('active'); 
         });
+
     } catch (error) { 
         showToast("Произошла ошибка: " + error.message, 'error'); 
     }
@@ -760,8 +706,8 @@ window.submitReview = function() {
             return; 
         }
 
-        const googleBridgeUrl = 'https://script.google.com/macros/s/AKfycbx4UNUpAcac5We1K1UifCRHGpHz07RBmZvMapBPdjYjQy_Ur_oRvFdDwKg2PRke0dHT/exec';
-        
+        const googleBridgeUrl = 'https://script.google.com/macros/s/AKfycbx4UNUpAcac5We1K1UifCRHGpHz07RBmZvMapBPdjYjQy_Ur_oRvFdDwKg2PRke0dHT/exec'; 
+
         let reviewMessage = `💌 *Новый отзыв с сайта!*\n\n👤 *От кого:* ${name}\n💬 *Текст:* ${text}`;
 
         let loader = document.getElementById('loading-overlay');
@@ -775,7 +721,7 @@ window.submitReview = function() {
             loader = document.getElementById('loading-overlay');
         }
         loader.classList.add('active');
-        
+
         fetch(googleBridgeUrl, {
             method: 'POST',
             mode: 'no-cors', 
@@ -795,6 +741,7 @@ window.submitReview = function() {
         .finally(() => { 
             loader.classList.remove('active'); 
         });
+
     } catch (error) { 
         showToast("Произошла ошибка: " + error.message, 'error'); 
     }

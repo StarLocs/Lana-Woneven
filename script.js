@@ -1,5 +1,5 @@
 /* ==========================================================================
-   LANA WOVEN - ПОЛНЫЙ СКРИПТ САЙТА
+   LANA WOVEN - ПОЛНЫЙ СКРИПТ САЙТА (ЗАЩИТА ОТ ОШИБОК КОРЗИНЫ)
    ========================================================================== */
 
 let cart = [];
@@ -595,12 +595,11 @@ window.submitOrder = function() {
 
         const name = nameEl ? nameEl.value.trim() : '';
         const phone = phoneEl ? phoneEl.value.trim() : '';
-        const city = cityEl ? cityEl.value.trim() : 'Не указан'; 
+        const city = cityEl && cityEl.value.trim() !== '' ? cityEl.value.trim() : 'Не указан'; 
         const comment = commentEl ? commentEl.value.trim() : '';
 
-        // Проверяем заполненность. Если поля "Город" нет в HTML, мы его пропускаем, чтобы не блочить заказ.
-        if(!name || !phone || (cityEl && !cityEl.value.trim())) { 
-            showToast("Пожалуйста, заполните имя, телефон и город для доставки!", "error");
+        if(!name || !phone) { 
+            showToast("Пожалуйста, заполните имя и телефон для доставки!", "error");
             return; 
         }
 

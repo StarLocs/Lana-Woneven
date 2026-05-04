@@ -199,7 +199,7 @@ document.addEventListener("DOMContentLoaded", () => {
     }
 
     const galleryData = {
-        'page-bundle-summer': ['img/bundle_summer_1.jpg', 'img/bundle_summer_2.jpg', 'img/bundle_summer_3.jpg'], // <-- НОВЫЙ НАБОР ЗДЕСЬ
+        'page-bundle-summer': ['img/bundle_summer_1.jpg', 'img/bundle_summer_2.jpg', 'img/bundle_summer_3.jpg'],
         'page-shoe-12l': ['img/shoe_12l_1.jpg', 'img/shoe_12l_2.jpg', 'img/shoe_12l_3.jpg'],
         'page-support': ['img/support_v1_main.jpg', 'img/support_v1_alt.jpg'],
         'page-nest-20l': ['img/nest_20l_main.jpg', 'img/nest_20l_alt.jpg'],
@@ -588,13 +588,19 @@ function renderCartPage() {
 
 window.submitOrder = function() {
     try {
-        const name = document.getElementById('order-name').value;
-        const phone = document.getElementById('order-phone').value;
-        const city = document.getElementById('order-city').value; 
-        const comment = document.getElementById('order-comment').value;
+        const nameEl = document.getElementById('order-name');
+        const phoneEl = document.getElementById('order-phone');
+        const cityEl = document.getElementById('order-city');
+        const commentEl = document.getElementById('order-comment');
 
-        if(!name || !phone || !city) { 
-            showToast("Заполните имя, телефон и город для доставки!", "error");
+        const name = nameEl ? nameEl.value.trim() : '';
+        const phone = phoneEl ? phoneEl.value.trim() : '';
+        const city = cityEl ? cityEl.value.trim() : 'Не указан'; 
+        const comment = commentEl ? commentEl.value.trim() : '';
+
+        // Проверяем заполненность. Если поля "Город" нет в HTML, мы его пропускаем, чтобы не блочить заказ.
+        if(!name || !phone || (cityEl && !cityEl.value.trim())) { 
+            showToast("Пожалуйста, заполните имя, телефон и город для доставки!", "error");
             return; 
         }
 
@@ -698,8 +704,11 @@ window.submitOrder = function() {
 
 window.submitReview = function() {
     try {
-        const name = document.getElementById('review-name').value;
-        const text = document.getElementById('review-text').value;
+        const nameEl = document.getElementById('review-name');
+        const textEl = document.getElementById('review-text');
+
+        const name = nameEl ? nameEl.value.trim() : '';
+        const text = textEl ? textEl.value.trim() : '';
 
         if(!name || !text) { 
             showToast("Заполните имя и текст отзыва!", "error");
@@ -731,8 +740,8 @@ window.submitReview = function() {
         })
         .then(() => {
             showToast("Отзыв успешно отправлен!", "success");
-            document.getElementById('review-name').value = '';
-            document.getElementById('review-text').value = '';
+            if (nameEl) nameEl.value = '';
+            if (textEl) textEl.value = '';
         })
         .catch(error => {
             showToast('Ошибка сети. Отзыв не отправлен.', 'error');

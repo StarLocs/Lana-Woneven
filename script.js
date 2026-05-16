@@ -1,5 +1,5 @@
 /* ==========================================================================
-   LANA WOVEN - ПОЛНЫЙ СКРИПТ САЙТА (ЗАЩИТА ОТ ОШИБОК КОРЗИНЫ)
+   LANA WOVEN - ПОЛНЫЙ СКРИПТ САЙТА (С НОВИНКАМИ И ПРОМОКОДОМ ЛЕТО26)
    ========================================================================== */
 
 let cart = [];
@@ -199,6 +199,9 @@ document.addEventListener("DOMContentLoaded", () => {
     }
 
     const galleryData = {
+        'page-hanging-5l-new': ['img/hanging_5l_new_1.jpg', 'img/hanging_5l_new_2.jpg'], // <-- НОВИНКА
+        'page-floor-15l': ['img/floor15l_1.jpg', 'img/floor15l_2.jpg'],
+        'page-mandarin-10l': ['img/mandarin_10l_1.jpg', 'img/mandarin_10l_2.jpg'],
         'page-bundle-summer': ['img/bundle_summer_1.jpg', 'img/bundle_summer_2.jpg', 'img/bundle_summer_3.jpg'],
         'page-shoe-12l': ['img/shoe_12l_1.jpg', 'img/shoe_12l_2.jpg', 'img/shoe_12l_3.jpg'],
         'page-support': ['img/support_v1_main.jpg', 'img/support_v1_alt.jpg'],
@@ -316,12 +319,13 @@ document.addEventListener("DOMContentLoaded", () => {
     }
 });
 
+// --- ЛОГИКА ПРОМОКОДОВ ---
 window.applyPromo = function() {
     const input = document.getElementById('promo-code-input');
     const msg = document.getElementById('promo-message');
-    const code = input.value.trim().toUpperCase(); 
+    const code = input.value.trim().toUpperCase().replace(/\s+/g, ''); 
     
-    if (code === 'LANA5') {
+    if (code === 'ЛЕТО26') {
         discountPercent = 5;
         msg.className = 'promo-message success';
         msg.innerHTML = '<i class="fas fa-check-circle"></i> Промокод успешно применен! Скидка 5%';

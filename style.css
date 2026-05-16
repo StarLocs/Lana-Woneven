@@ -63,11 +63,11 @@ main {
 
 #page-hanging, #page-floor, #page-floor-pattern, #page-hanging2, #page-floor-pattern2, #page-floor2, 
 #page-floor-20l, #page-floor-12l, #page-floor-12l-2, #page-happiness, #page-happiness-decor,
-#page-floor-12l-v2, #page-floor-12l-v3, #page-floor-20l-v2, #page-egg-24l, #page-bundle, #page-bundle-summer, #page-reviews, #page-product-12l, #page-floor-90l, #page-floor-45l, #page-floor12-v4 { 
+#page-floor-12l-v2, #page-floor-12l-v3, #page-floor-20l-v2, #page-egg-24l, #page-bundle, #page-bundle-summer, #page-reviews, #page-product-12l, #page-floor-90l, #page-floor-45l, #page-floor12-v4, #page-mandarin-10l, #page-floor-15l, #page-hanging-5l-new { 
     background: linear-gradient(rgba(251, 251, 253, 0.95), rgba(251, 251, 253, 0.95)), url('img/product_bg.jpg') center/cover fixed;
 }
 
-#page-mushroom, #page-mushroom-30, #page-mushroom-20, #page-mushroom-15, #page-trunk, #page-vase, #page-nest, #page-support, #page-nest-20l, #page-shoe-12l { 
+#page-mushroom, #page-mushroom-30, #page-mushroom-20, #page-mushroom-15, #page-trunk, #page-vase, #page-nest, #page-support, #page-nest-20l, #page-shoe-12l, #page-support-40 { 
     background: linear-gradient(rgba(251, 251, 253, 0.95), rgba(251, 251, 253, 0.95)), url('img/garden_bg.jpg') center/cover fixed;
 }
 
@@ -82,12 +82,12 @@ body.dark-theme#page-hanging2, body.dark-theme#page-floor-pattern2, body.dark-th
 body.dark-theme#page-floor-20l, body.dark-theme#page-floor-12l, body.dark-theme#page-floor-12l-2, 
 body.dark-theme#page-happiness, body.dark-theme#page-happiness-decor, body.dark-theme#page-floor-12l-v2, 
 body.dark-theme#page-floor-12l-v3, body.dark-theme#page-floor-20l-v2, body.dark-theme#page-egg-24l,
-body.dark-theme#page-bundle, body.dark-theme#page-bundle-summer, body.dark-theme#page-reviews, body.dark-theme#page-product-12l, body.dark-theme#page-floor-90l, body.dark-theme#page-floor-45l, body.dark-theme#page-floor12-v4 { 
+body.dark-theme#page-bundle, body.dark-theme#page-bundle-summer, body.dark-theme#page-reviews, body.dark-theme#page-product-12l, body.dark-theme#page-floor-90l, body.dark-theme#page-floor-45l, body.dark-theme#page-floor12-v4, body.dark-theme#page-mandarin-10l, body.dark-theme#page-floor-15l, body.dark-theme#page-hanging-5l-new { 
     background: linear-gradient(rgba(0, 0, 0, 0.92), rgba(0, 0, 0, 0.92)), url('img/product_bg.jpg') center/cover fixed;
 }
 
 body.dark-theme#page-mushroom, body.dark-theme#page-mushroom-30, body.dark-theme#page-mushroom-20,
-body.dark-theme#page-mushroom-15, body.dark-theme#page-trunk, body.dark-theme#page-vase, body.dark-theme#page-nest, body.dark-theme#page-support, body.dark-theme#page-nest-20l, body.dark-theme#page-shoe-12l { 
+body.dark-theme#page-mushroom-15, body.dark-theme#page-trunk, body.dark-theme#page-vase, body.dark-theme#page-nest, body.dark-theme#page-support, body.dark-theme#page-nest-20l, body.dark-theme#page-shoe-12l, body.dark-theme#page-support-40 { 
     background: linear-gradient(rgba(0, 0, 0, 0.92), rgba(0, 0, 0, 0.92)), url('img/garden_bg.jpg') center/cover fixed;
 }
 
@@ -847,6 +847,11 @@ body.dark-theme .anim-sun { background: #F39C12; box-shadow: 0 0 10px rgba(243, 
 /* ==========================================================================
    📱 МОБИЛЬНАЯ ВЕРСИЯ И АДАПТАЦИЯ
    ========================================================================== */
+
+@media (max-width: 1200px) {
+    .promo-cards-container { flex-direction: column; justify-content: center; align-items: center; width: 100%; }
+    .promo-hero-card { flex: auto; max-width: 400px; width: 100%; margin-bottom: 20px; }
+}
 
 @media (max-width: 900px) {
     .product-page { grid-template-columns: 1fr; gap: 50px; padding-top: 150px; }
